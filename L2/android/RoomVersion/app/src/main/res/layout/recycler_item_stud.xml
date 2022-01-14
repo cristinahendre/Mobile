@@ -1,0 +1,84 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@android:color/darker_gray"
+    android:padding="10dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/teacherLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Teacher:" />
+        <TextView
+            android:id="@+id/teacher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Teacher" />
+
+
+        <TextView
+            android:id="@+id/subjectLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Subject:" />
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Subject" />
+
+
+
+        <TextView
+            android:id="@+id/gradeLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Grade:" />
+        <TextView
+            android:id="@+id/grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="GradeValue" />
+
+        <TextView
+            android:id="@+id/dateLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Date:" />
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Date" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="right">
+
+
+
+
+    </LinearLayout>
+</LinearLayout>

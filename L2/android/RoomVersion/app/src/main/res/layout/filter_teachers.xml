@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    android:padding="15dp">
+
+
+    <TextView
+        android:id="@+id/studentLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Student:" />
+    <EditText
+        android:id="@+id/edtStudent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Student"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/line2"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Grade:" />
+    <EditText
+        android:id="@+id/edtGrade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Grade"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/line3"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Date:" />
+    <EditText
+        android:id="@+id/edtDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Date"
+        android:inputType="date" />
+
+
+
+    <Button
+        android:id="@+id/btAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/red"
+        android:text="Filter" />
+</LinearLayout>

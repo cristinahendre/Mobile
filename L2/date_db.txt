@@ -1,0 +1,11 @@
+insert into teachers(id,name, email, password, subject) values (3,"b","b@prof.com","b","Science")
+insert into teachers(id,name, email, password, subject) values (2,"c","c@prof.com","c","Reading")
+insert into teachers(id,name, email, password, subject) values (1,"a","a@prof.com","a","Maths")
+
+insert into students(id,name,email,password) values (3,"b","b@elev.com","b")
+insert into students(id,name,email,password) values (2,"c","c@elev.com","c")
+insert into students(id,name,email,password) values (1,"a","a@elev.com","a")
+
+insert into grades(id,teacher_id, student_id,grade, date, changed) values (2,2,2,8,2020-01-10,0)
+insert into grades(id,teacher_id, student_id,grade, date, changed) values (1,1,1,10,2020-01-10,0)
+insert into grades(id,teacher_id, student_id,grade, date, changed) values (3,3,3,3,2021-11-10,0)
