@@ -14,7 +14,7 @@ class Model : ViewModel() {
     val vehicles: LiveData<List<Vehicle>> = mutableVehicles
 
 
-    suspend fun delete(id: Int): Int {
+    suspend fun delete(id: Int): String {
         val response = NetworkRepository.delete(id)
         logd("[model- delete]")
         return response
@@ -31,6 +31,24 @@ class Model : ViewModel() {
         val res = NetworkRepository.getAll()
         logd("[model-get all] $res")
         mutableVehicles.value = res
+        return res
+    }
+
+    suspend fun getTenVehicles(): List<Vehicle>? {
+        val res = NetworkRepository.getTenVehicles()
+        logd("[model-get ten vehicles] $res")
+        return res
+    }
+
+    suspend fun getVehiclesByColor(color:String): List<Vehicle>? {
+        val res = NetworkRepository.getVehiclesByColor(color)
+        logd("[model-get vehicles by color] $res")
+        return res
+    }
+
+    suspend fun getColors(): List<String>? {
+        val res = NetworkRepository.getColors()
+        logd("[model-get colors] $res")
         return res
     }
 

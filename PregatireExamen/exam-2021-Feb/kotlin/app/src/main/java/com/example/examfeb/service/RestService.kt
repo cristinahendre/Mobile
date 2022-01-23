@@ -22,8 +22,17 @@ object RestService {
         @GET("review")
         suspend fun getAll(): List<Vehicle>
 
-        @DELETE("{id}")
-        suspend fun deleteVehicle(@Path("id") id: Int): Response<String>
+        @GET("all")
+        suspend fun getTenVehicles(): List<Vehicle>
+
+        @GET("colors")
+        suspend fun getColors(): List<String>
+
+        @GET("vehicles/{color}")
+        suspend fun getVehiclesByColor(@Path("color") color:String): List<Vehicle>
+
+        @DELETE("vehicle/{id}")
+        suspend fun deleteVehicle(@Path("id") id: Int): Response<Vehicle>
 
         @POST("vehicle")
         suspend fun add(

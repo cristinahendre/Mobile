@@ -24,6 +24,11 @@ class VehicleRepository(private val vehicleDao: VehicleDao) {
 
     }
 
+    fun getVehiclesOrdered(): LiveData<List<Vehicle>> {
+        return vehicleDao.getAllOrdered()
+    }
+
+
     fun getVehiclesChanged(): LiveData<List<Vehicle>> {
         return vehicleDao.getVehiclesChanged()
     }

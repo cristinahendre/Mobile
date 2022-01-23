@@ -9,6 +9,10 @@ interface VehicleDao {
     @Query("SELECT * FROM vehicles ")
     fun getAll(): LiveData<List<Vehicle>>
 
+    @Query("SELECT * FROM vehicles order by seats desc")
+    fun getAllOrdered(): LiveData<List<Vehicle>>
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert( gr: Vehicle)
 

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -63,7 +64,7 @@ class AddVehicleActivity : AppCompatActivity() {
                 if (resp != null) {
                     if (resp == "off") {
                         //the server is down
-                        showErrorMessage("The server is down.")
+                        displayMessageToast("The server is down.")
                         vehicle.changed = 1
                         vehicleViewModel.insert(vehicle)
                         setResult(Activity.RESULT_OK, replyIntent)
@@ -73,19 +74,24 @@ class AddVehicleActivity : AppCompatActivity() {
                         val id = getId(resp)
                         logd("id computed $id")
                         if (id == -1) {
-                            showErrorMessage(resp)
+                            displayMessageToast(resp)
                             progress.dismiss()
                         } else {
                             vehicle.changed = 0
                             vehicle.id = id
                             vehicleViewModel.insert(vehicle)
+
+                            val msg = "The driver " + getDriver(resp) + " whose car has " +
+                                    getSeats(resp) + " received the license: " + getLicense(resp)
+                            logd(msg)
+                            displayMessageToast(msg)
                             setResult(Activity.RESULT_OK, replyIntent)
                             progress.dismiss()
                             finish()
                         }
                     }
                 } else {
-                    showErrorMessage("There is some trouble.")
+                    displayMessageToast("There is some trouble.")
                     progress.dismiss()
                 }
             }
@@ -115,6 +121,62 @@ class AddVehicleActivity : AppCompatActivity() {
             }
         }
         return myValue.toInt()
+
+    }
+
+    private fun getSeats(message: String): Int {
+
+        val placeDouaPuncte = message.indexOf("seats") + 6
+        val placeVirgula = message.indexOf("driver") -3
+        if (placeDouaPuncte == -1 || placeVirgula == -1) {
+            return -1
+        }
+        var myValue = ""
+        for (i in message.indices) {
+            if (i in placeDouaPuncte..placeVirgula) {
+                myValue += message[i]
+            }
+        }
+        return myValue.toInt()
+
+    }
+
+    private fun displayMessageToast(myMessage: String) {
+
+        Toast.makeText(this, myMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getLicense(message: String): String {
+
+        val placeDouaPuncte = message.indexOf("license") + 8
+        val placeVirgula = message.indexOf("status") - 2
+        if (placeDouaPuncte == -1 || placeVirgula == -1) {
+            return ""
+        }
+        var myValue = ""
+        for (i in message.indices) {
+            if (i in placeDouaPuncte until placeVirgula) {
+                myValue += message[i]
+            }
+        }
+        return myValue
+
+    }
+
+    private fun getDriver(message: String): String {
+
+        val placeDouaPuncte = message.indexOf("driver") + 7
+        val placeVirgula = message.indexOf("color") - 2
+        if (placeDouaPuncte == -1 || placeVirgula == -1) {
+            return ""
+        }
+        var myValue = ""
+        for (i in message.indices) {
+            if (i in placeDouaPuncte until placeVirgula) {
+                myValue += message[i]
+            }
+        }
+        return myValue
 
     }
 

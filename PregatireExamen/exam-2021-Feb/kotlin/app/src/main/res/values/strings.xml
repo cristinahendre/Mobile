@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">ExamFeb</string>
     <string name="add">Add</string>
+    <string name="registration">Registration</string>
+    <string name="manage">Manage</string>
+    <string name="reports">Reports</string>
+    <string name="tenvehicles">Top 10 Vehicles</string>
 </resources>

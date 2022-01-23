@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExamFeb"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RegistrationActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,8 +22,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".RegistrationActivity"></activity>
         <activity android:name=".AddVehicleActivity" />
+        <activity android:name=".ManageActivity" />
+        <activity android:name=".ColorActivity" />
+        <activity android:name=".ReportsActivity" />
+        <activity android:name=".TenVehiclesActivity" />
     </application>
 
 </manifest>

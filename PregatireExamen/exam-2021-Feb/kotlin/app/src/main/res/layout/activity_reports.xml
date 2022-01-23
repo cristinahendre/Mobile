@@ -4,38 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightyellow"
     tools:context=".MainActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <Button
-
-        android:id="@+id/registration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow"
-        android:text="@string/registration"
-        android:textColor="@color/black" />
-
-    <Button
-
-        android:id="@+id/manage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:text="@string/manage"
-        android:textColor="@color/black" />
-
         <Button
 
-            android:id="@+id/reports"
+            android:id="@+id/tenVehicles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/red"
-            android:text="@string/reports"
+            android:background="@color/yellow"
+            android:text="@string/tenvehicles"
             android:textColor="@color/black" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,6 +53,11 @@ class VehicleViewModel(application: Application) : AndroidViewModel(application)
         allVehicles=  repository.allVehicles
     }
 
+    fun getVehiclesOrdered(){
+        allVehicles=repository.getVehiclesOrdered()
+    }
+
+
 
     fun getVehiclesChanged() {
         vehiclesChanged = repository.getVehiclesChanged()
