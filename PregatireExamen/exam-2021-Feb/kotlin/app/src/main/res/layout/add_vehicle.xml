@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/licenseLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="License:" />
+    <EditText
+        android:id="@+id/license"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="License" />
+
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Status:" />
+    <EditText
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Status" />
+
+
+    <TextView
+        android:id="@+id/seatsLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Seats:" />
+    <EditText
+        android:id="@+id/seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Seats"  />
+
+    <TextView
+        android:id="@+id/driverLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Driver:" />
+    <EditText
+        android:id="@+id/driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Driver"  />
+
+    <TextView
+        android:id="@+id/colorLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Color:" />
+    <EditText
+        android:id="@+id/color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Color"  />
+
+
+    <TextView
+        android:id="@+id/cargoLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Cargo:" />
+    <EditText
+        android:id="@+id/cargo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Cargo"  />
+
+
+
+
+    <Button
+
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:text="@string/add"
+        android:textColor="@color/black" />
+
+</LinearLayout>

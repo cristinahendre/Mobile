@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 
 
 object RestService {
-    private const val URL = "http://10.0.2.2:8080/"
+    private const val URL = "http://10.0.2.2:2021/"
 
     interface Service {
         @GET("people")

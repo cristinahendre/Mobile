@@ -16,7 +16,7 @@ interface VehicleDao {
     suspend fun insertAll( gr: List<Vehicle>)
 
 
-    @Query("DELETE FROM vehicles where Id = :id ")
+    @Query("DELETE FROM vehicles where id = :id ")
     suspend fun delete(id:Int)
 
     @Query("SELECT * FROM vehicles where  changed != 0")

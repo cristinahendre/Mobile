@@ -1,9 +1,13 @@
 package com.example.examfeb
+
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -13,26 +17,41 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.examfeb.domain.Vehicle
 import com.example.examfeb.models.Model
 import com.example.examfeb.viewmodel.VehicleViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class RegistrationActivity : AppCompatActivity() {
 
     private val model: Model by viewModels()
     private lateinit var vehicleViewModel: VehicleViewModel
-
     private lateinit var adapter: VehicleAdapter
+    private lateinit var progress: ProgressDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        progress = ProgressDialog(this)
+        progress.setTitle("Loading")
+        progress.setMessage("Please wait...")
+        progress.setCancelable(false)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
         vehicleViewModel = ViewModelProviders.of(this).get(VehicleViewModel::class.java)
         adapter = VehicleAdapter(this)
+        vehicleViewModel.deleteAll()
         fetchData()
         setupRecyclerView(findViewById(R.id.recyclerview))
         observeModel()
+        val addButton = findViewById<FloatingActionButton>(R.id.add)
+        addButton.setOnClickListener {
+            val intent = Intent(this@RegistrationActivity, AddVehicleActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
@@ -47,22 +66,16 @@ class RegistrationActivity : AppCompatActivity() {
             R.id.retry -> {
                 logd("retry clicked")
                 GlobalScope.launch(Dispatchers.Main) {
-                    val myStudentsGrades = model.vehicles
-                    if (myStudentsGrades == null) {
-                        //use db data
-                        Toast.makeText(
-                            applicationContext,
-                            "The server is down",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    areChangesToBeDone()
+                    fetchData()
                     observeModel()
                 }
+
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
+
 
     private fun displayVehicles(gr: List<Vehicle>) {
         adapter.setVehicles(gr)
@@ -107,13 +120,13 @@ class RegistrationActivity : AppCompatActivity() {
             val current = vehicles[position]
             GlobalScope.launch(Dispatchers.Main) {
 
-                holder.licenseItemView.text = current.License
-                holder.statusItemView.text = current.Status
-                holder.seatsItemView.text = current.Seats.toString()
-                holder.driverItemView.text = current.Driver
-                holder.statusItemView.text = current.Status
-                holder.colorItemView.text = current.Color
-                holder.cargoItemView.text = current.Cargo.toString()
+                holder.licenseItemView.text = current.license
+                holder.statusItemView.text = current.status
+                holder.seatsItemView.text = current.seats.toString()
+                holder.driverItemView.text = current.driver
+                holder.statusItemView.text = current.status
+                holder.colorItemView.text = current.color
+                holder.cargoItemView.text = current.cargo.toString()
             }
         }
 
@@ -126,87 +139,120 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     private fun observeModel() {
         vehicleViewModel.getVehicles()
         vehicleViewModel.allVehicles?.observe { displayVehicles(it ?: emptyList()) }
+
     }
 
     private fun fetchData() {
         GlobalScope.launch(Dispatchers.Main) {
+            progress.show()
 
             vehicleViewModel.getVehiclesChanged()
-            vehicleViewModel.vehiclesChanged?.observe {  }
+            vehicleViewModel.vehiclesChanged?.observe { }
             val myGrades = model.getVehicles()
-            logd("My grades $myGrades")
+            logd("my vehicles in activity $myGrades")
             if (myGrades == null) {
                 //the server is off
                 displayMessage("The server is down. Please retry.")
             } else {
-                areChangesToBeDone()
                 vehicleViewModel.insertAll(myGrades)
                 logd("done inserting")
             }
+            progress.dismiss()
+
 
         }
     }
+
+    @SuppressLint("ShowToast")
     private fun displayMessage(myMessage: String) {
-        Toast.makeText(
-            applicationContext,
-            myMessage,
-            Toast.LENGTH_SHORT
-        ).show()
+
+        val parentLayout: View = findViewById(android.R.id.content)
+        Snackbar.make(parentLayout, myMessage, Snackbar.LENGTH_LONG)
+            .setAction("CLOSE") { }
+            .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
+            .show()
     }
 
-    private suspend fun areChangesToBeDone(): Boolean{
+    private suspend fun areChangesToBeDone(): Boolean {
         val dbChanges = vehicleViewModel.vehiclesChanged?.value
+        progress.show()
         try {
             if (dbChanges != null) {
-                logd("are changes to be done, with grades $dbChanges")
+                logd("are changes to be done, with data $dbChanges")
                 if (dbChanges != null) {
                     for (gr: Vehicle in dbChanges) {
                         logd(gr)
-                        if (gr.Changed == 1) {
+                        if (gr.changed == 1) {
                             //to add
-                            gr.Changed = 0
-                            val res =model.add(gr)
-                            if(res!=-1) {
-                                gr.Changed = 0
-                                vehicleViewModel.update(gr)
+                            gr.changed = 0
+                            val resp = model.add(gr)
+                            if (resp != null) {
+                                if (resp == "off") {
+                                    //the server is down
+                                    displayMessage("The server is down.")
+
+                                } else {
+                                    val id = getId(resp)
+                                    logd("id computed $id")
+                                    if (id == -1) {
+                                        displayMessage(resp)
+                                    } else {
+                                        gr.changed = 0
+                                        gr.id = id
+                                        vehicleViewModel.update(gr)
+                                    }
+                                }
+                            } else {
+                                displayMessage("There is some trouble.")
+                                progress.dismiss()
                             }
-                            else gr.Changed =1
                         }
-                        if(gr.Changed ==2){
+                        if (gr.changed == 2) {
                             //to delete
-                            gr.Changed = 0
-                            val res = model.delete(gr.Id)
-                            if(res != -1) {
-                                vehicleViewModel.delete(gr.Id)
-                            }
-                            else gr.Changed =2
+                            gr.changed = 0
+                            val res = model.delete(gr.id)
+                            if (res != -1) {
+                                vehicleViewModel.delete(gr.id)
+                            } else gr.changed = 2
                         }
-                        if(gr.Changed ==3){
+                        if (gr.changed == 3) {
                             //to update
-                            gr.Changed = 0
-                            val res =model.update(gr)
-                            if(res != -1) {
+                            gr.changed = 0
+                            val res = model.update(gr)
+                            if (res != -1) {
                                 vehicleViewModel.update(gr)
-                            }
-                            else gr.Changed = 3
+                            } else gr.changed = 3
                         }
                     }
                 }
             }
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             return false
         }
+        progress.dismiss()
         return true
     }
 
+
+    private fun getId(message: String): Int {
+
+        val placeDouaPuncte = message.indexOf("=")
+        val placeVirgula = message.indexOf(",")
+        if (placeDouaPuncte == -1 || placeVirgula == -1) {
+            return -1
+        }
+        var myValue = ""
+        for (i in message.indices) {
+            if (i in (placeDouaPuncte + 1) until placeVirgula) {
+                myValue += message[i]
+            }
+        }
+        return myValue.toInt()
+
+    }
 
     private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
         observe(this@RegistrationActivity, { observe(it) })

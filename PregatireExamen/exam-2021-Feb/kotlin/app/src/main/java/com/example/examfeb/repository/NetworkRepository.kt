@@ -39,22 +39,21 @@ object NetworkRepository {
     }
 
 
-    suspend fun add(vehicle: Vehicle): Int {
-        try {
-            if (RestService.service != null) {
-                val id = RestService.service.add(
-                    VehicleCredentials(vehicle.Id,vehicle.License, vehicle.Status,
-                    vehicle.Seats, vehicle.Driver, vehicle.Color, vehicle.Cargo,
-                    vehicle.Changed)
-                ).body()
-                logd("[add] new id = $id")
-                if (id == null) return -1
-                return id
-            }
-            return -1
-        }
-        catch (e: Exception){
-            return -1
+    suspend fun add(vehicle: Vehicle): String? {
+        return try {
+            logd("add in network repository")
+            val resp = RestService.service.add(
+                VehicleCredentials(vehicle.id,vehicle.license, vehicle.status,
+                    vehicle.seats, vehicle.driver, vehicle.color, vehicle.cargo)
+            )
+            logd("resp is $resp")
+            var r =""
+            r = if(resp.isSuccessful){
+                resp.body().toString()
+            } else resp.message()
+            r
+        } catch (e: Exception){
+            "off"
         }
     }
 
@@ -63,9 +62,8 @@ object NetworkRepository {
             logd("[update]")
             if (RestService.service != null) {
                 val msg = RestService.service.update(
-                    VehicleCredentials(vehicle.Id,vehicle.License, vehicle.Status,
-                        vehicle.Seats, vehicle.Driver, vehicle.Color, vehicle.Cargo,
-                        vehicle.Changed)
+                    VehicleCredentials(vehicle.id,vehicle.license, vehicle.status,
+                        vehicle.seats, vehicle.driver, vehicle.color, vehicle.cargo)
                 ).body()
                 logd("message: $msg")
                 if (msg == "OK") return 0

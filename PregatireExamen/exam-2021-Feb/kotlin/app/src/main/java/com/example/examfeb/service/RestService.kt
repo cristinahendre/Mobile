@@ -15,7 +15,7 @@ import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
 object RestService {
-    private const val URL = "http://10.0.2.2:8080/"
+    private const val URL = "http://10.0.2.2:2021/"
 
     interface Service {
 
@@ -25,10 +25,10 @@ object RestService {
         @DELETE("{id}")
         suspend fun deleteVehicle(@Path("id") id: Int): Response<String>
 
-        @POST("grade")
+        @POST("vehicle")
         suspend fun add(
             @Body vehicle: VehicleCredentials
-        ): Response<Int>
+        ): Response<Vehicle>
 
         @PUT("grade")
         suspend fun update(

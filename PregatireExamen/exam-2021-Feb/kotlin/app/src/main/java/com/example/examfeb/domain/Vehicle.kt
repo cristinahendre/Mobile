@@ -7,21 +7,21 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "vehicles")
 data class Vehicle(
     @PrimaryKey(autoGenerate = true)
-    var Id: Int,
-    @ColumnInfo(name = "License")
-    var License: String,
-    @ColumnInfo(name = "Status")
-    var Status:String,
-    @ColumnInfo(name = "Seats")
-    var Seats:  Int,
-    @ColumnInfo(name = "Driver")
-    var Driver:  String,
-    @ColumnInfo(name = "Color")
-    var Color:  String,
-    @ColumnInfo(name = "Cargo")
-    var Cargo:  Int,
-    @ColumnInfo(name = "Changed")
-    var Changed:Int
+    var id: Int,
+    @ColumnInfo(name = "license")
+    var license: String,
+    @ColumnInfo(name = "status")
+    var status:String,
+    @ColumnInfo(name = "seats")
+    var seats:  Int,
+    @ColumnInfo(name = "driver")
+    var driver:  String,
+    @ColumnInfo(name = "color")
+    var color:  String,
+    @ColumnInfo(name = "cargo")
+    var cargo:  Int,
+    @ColumnInfo(name = "changed")
+    var changed:Int
 
     //Changed = 0 (no changes), 1 (add), 2(delete), 3(update)
 

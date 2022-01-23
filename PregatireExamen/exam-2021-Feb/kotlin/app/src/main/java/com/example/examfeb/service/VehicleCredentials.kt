@@ -3,19 +3,17 @@ package com.example.examfeb.service
 import com.google.gson.annotations.SerializedName
 
 class VehicleCredentials(
-    @SerializedName("Id") val Id: Int,
-    @SerializedName("License")
+    @SerializedName("id") val Id: Int,
+    @SerializedName("license")
     val License: String,
-    @SerializedName("Status")
+    @SerializedName("status")
     val Status: String,
-    @SerializedName("Seats")
+    @SerializedName("seats")
     val Seats: Number,
-    @SerializedName("Driver")
+    @SerializedName("driver")
     val Driver: String,
-    @SerializedName("Color")
+    @SerializedName("color")
     val Color: String,
-    @SerializedName("Cargo")
-    val Cargo: Number,
-    @SerializedName("Changed")
-    val Changed: Number
+    @SerializedName("cargo")
+    val Cargo: Number
 )

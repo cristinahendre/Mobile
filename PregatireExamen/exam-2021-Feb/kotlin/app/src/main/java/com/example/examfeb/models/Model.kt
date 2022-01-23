@@ -9,7 +9,6 @@ import com.example.examfeb.repository.NetworkRepository
 
 
 class Model : ViewModel() {
-    private var authToken: String? = null
     private val mutableVehicles = MutableLiveData<List<Vehicle>>().apply { value = emptyList() }
 
     val vehicles: LiveData<List<Vehicle>> = mutableVehicles
@@ -21,9 +20,9 @@ class Model : ViewModel() {
         return response
     }
 
-    suspend fun add(gr: Vehicle): Int {
+    suspend fun add(gr: Vehicle): String? {
         val myId = NetworkRepository.add(gr)
-        logd("[model- add: new id = $myId")
+        logd("[model- add] $myId")
         return myId
 
     }

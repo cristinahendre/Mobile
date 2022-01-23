@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 
 
 @Database(
-    entities = [Vehicle::class], version = 1
+    entities = [Vehicle::class], version = 2
 )
 
 abstract class VehicleDatabase : RoomDatabase() {

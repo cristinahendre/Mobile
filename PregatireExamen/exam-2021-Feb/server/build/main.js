@@ -95,49 +95,61 @@ module.exports =
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var koa = __webpack_require__(/*! koa */ "koa");
 
 var app = module.exports = new koa();
 
-const server = __webpack_require__(/*! http */ "http").createServer(app.callback());
+var server = __webpack_require__(/*! http */ "http").createServer(app.callback());
 
-const WebSocket = __webpack_require__(/*! ws */ "ws");
+var WebSocket = __webpack_require__(/*! ws */ "ws");
 
-const wss = new WebSocket.Server({
-  server
+var wss = new WebSocket.Server({
+  server: server
 });
 
-const Router = __webpack_require__(/*! koa-router */ "koa-router");
+var Router = __webpack_require__(/*! koa-router */ "koa-router");
 
-const cors = __webpack_require__(/*! @koa/cors */ "@koa/cors");
+var cors = __webpack_require__(/*! @koa/cors */ "@koa/cors");
 
-const bodyParser = __webpack_require__(/*! koa-bodyparser */ "koa-bodyparser");
+var bodyParser = __webpack_require__(/*! koa-bodyparser */ "koa-bodyparser");
 
 app.use(bodyParser());
 app.use(cors());
 app.use(middleware);
 
 function middleware(ctx, next) {
-  const start = new Date();
-  return next().then(() => {
-    const ms = new Date() - start;
-    console.log(`${start.toLocaleTimeString()} ${ctx.request.method} ${ctx.request.url} ${ctx.response.status} - ${ms}ms`);
+  var start = new Date();
+  return next().then(function () {
+    var ms = new Date() - start;
+    console.log("".concat(start.toLocaleTimeString(), " ").concat(ctx.request.method, " ").concat(ctx.request.url, " ").concat(ctx.response.status, " - ").concat(ms, "ms"));
   });
 }
 
-const getRandomInt = (min, max) => {
+var getRandomInt = function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-const names = ['IMGROOT', 'HAVA PUG', 'Y U CRYN', 'BOY', 'EXPIRED', 'GO FOXES', 'LLWLWWW'];
-const statuses = ['new', 'working', 'damaged', 'old'];
-const drivers = ['Michael', 'Matthew', 'Mason', 'Maverick', 'Miles', 'Maxwell', 'Max'];
-const colors = ['Yellow', 'Blue', 'Black', 'Green', 'White', 'Red'];
-const vehicles = [];
+var names = ['IMGROOT', 'HAVA PUG', 'Y U CRYN', 'BOY', 'EXPIRED', 'GO FOXES', 'LLWLWWW'];
+var statuses = ['new', 'working', 'damaged', 'old'];
+var drivers = ['Michael', 'Matthew', 'Mason', 'Maverick', 'Miles', 'Maxwell', 'Max'];
+var colors = ['Yellow', 'Blue', 'Black', 'Green', 'White', 'Red'];
+var vehicles = [];
 
-for (let i = 0; i < 50; i++) {
+for (var i = 0; i < 50; i++) {
   vehicles.push({
     id: i + 1,
     license: names[getRandomInt(0, names.length)] + " " + i,
@@ -149,25 +161,29 @@ for (let i = 0; i < 50; i++) {
   });
 }
 
-const router = new Router();
-router.get('/all', ctx => {
+var router = new Router();
+router.get('/all', function (ctx) {
   ctx.response.body = vehicles;
   ctx.response.status = 200;
 });
-router.get('/review', ctx => {
+router.get('/review', function (ctx) {
   ctx.response.body = vehicles;
   ctx.response.status = 200;
 });
-router.get('/colors', ctx => {
-  ctx.response.body = [...new Set(vehicles.map(obj => obj.color))];
+router.get('/colors', function (ctx) {
+  ctx.response.body = _toConsumableArray(new Set(vehicles.map(function (obj) {
+    return obj.color;
+  })));
   ctx.response.status = 200;
 });
-router.get('/vehicles/:color', ctx => {
-  const headers = ctx.params;
-  const color = headers.color;
+router.get('/vehicles/:color', function (ctx) {
+  var headers = ctx.params;
+  var color = headers.color;
 
   if (typeof color !== 'undefined') {
-    ctx.response.body = vehicles.filter(obj => obj.color == color);
+    ctx.response.body = vehicles.filter(function (obj) {
+      return obj.color == color;
+    });
     ctx.response.status = 200;
   } else {
     console.log("Missing or invalid: color!");
@@ -177,12 +193,14 @@ router.get('/vehicles/:color', ctx => {
     ctx.response.status = 404;
   }
 });
-router.get('/driver/:name', ctx => {
-  const headers = ctx.params;
-  const name = headers.name;
+router.get('/driver/:name', function (ctx) {
+  var headers = ctx.params;
+  var name = headers.name;
 
   if (typeof name !== 'undefined') {
-    ctx.response.body = vehicles.filter(obj => obj.driver == name);
+    ctx.response.body = vehicles.filter(function (obj) {
+      return obj.driver == name;
+    });
     ctx.response.status = 200;
   } else {
     console.log("Missing or invalid: driver name!");
@@ -193,24 +211,28 @@ router.get('/driver/:name', ctx => {
   }
 });
 
-const broadcast = data => wss.clients.forEach(client => {
-  if (client.readyState === WebSocket.OPEN) {
-    client.send(JSON.stringify(data));
-  }
-});
+var broadcast = function broadcast(data) {
+  return wss.clients.forEach(function (client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+};
 
-router.post('/vehicle', ctx => {
+router.post('/vehicle', function (ctx) {
   // console.log("ctx: " + JSON.stringify(ctx));
-  const headers = ctx.request.body; // console.log("body: " + JSON.stringify(headers));
+  var headers = ctx.request.body; // console.log("body: " + JSON.stringify(headers));
 
-  const license = headers.license;
-  const seats = headers.seats;
-  const driver = headers.driver;
-  const color = headers.color;
-  const cargo = headers.cargo;
+  var license = headers.license;
+  var seats = headers.seats;
+  var driver = headers.driver;
+  var color = headers.color;
+  var cargo = headers.cargo;
 
   if (typeof license !== 'undefined' && typeof driver !== 'undefined' && typeof seats !== 'undefined' && color !== 'undefined' && cargo !== 'undefined') {
-    const index = vehicles.findIndex(obj => obj.license == license);
+    var index = vehicles.findIndex(function (obj) {
+      return obj.license == license;
+    });
 
     if (index !== -1) {
       console.log("Vehicle already exists!");
@@ -219,17 +241,17 @@ router.post('/vehicle', ctx => {
       };
       ctx.response.status = 404;
     } else {
-      let maxId = Math.max.apply(Math, vehicles.map(function (obj) {
+      var maxId = Math.max.apply(Math, vehicles.map(function (obj) {
         return obj.id;
       })) + 1;
-      let obj = {
+      var obj = {
         id: maxId,
-        license,
+        license: license,
         status: 'new',
-        seats,
-        driver,
-        color,
-        cargo
+        seats: seats,
+        driver: driver,
+        color: color,
+        cargo: cargo
       }; // console.log("created: " + JSON.stringify(license));
 
       vehicles.push(obj);
@@ -245,14 +267,16 @@ router.post('/vehicle', ctx => {
     ctx.response.status = 404;
   }
 });
-router.del('/vehicle/:id', ctx => {
+router.del('/vehicle/:id', function (ctx) {
   // console.log("ctx: " + JSON.stringify(ctx));
-  const headers = ctx.params; // console.log("body: " + JSON.stringify(headers));
+  var headers = ctx.params; // console.log("body: " + JSON.stringify(headers));
 
-  const id = headers.id;
+  var id = headers.id;
 
   if (typeof id !== 'undefined') {
-    const index = vehicles.findIndex(obj => obj.id == id);
+    var index = vehicles.findIndex(function (obj) {
+      return obj.id == id;
+    });
 
     if (index === -1) {
       console.log("No vehicle with id: " + id);
@@ -261,7 +285,7 @@ router.del('/vehicle/:id', ctx => {
       };
       ctx.response.status = 404;
     } else {
-      let obj = vehicles[index]; // console.log("deleting: " + JSON.stringify(obj));
+      var obj = vehicles[index]; // console.log("deleting: " + JSON.stringify(obj));
 
       vehicles.splice(index, 1);
       ctx.response.body = obj;
