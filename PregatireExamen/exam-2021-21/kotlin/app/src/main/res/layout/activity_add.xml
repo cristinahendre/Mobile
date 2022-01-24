@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/gray"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Status:" />
+    <EditText
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Status" />
+
+
+    <TextView
+        android:id="@+id/numberLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Number:" />
+    <EditText
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Number"  />
+
+    <TextView
+        android:id="@+id/addressLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Address:" />
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Address"  />
+
+    <TextView
+        android:id="@+id/countLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Count:" />
+    <EditText
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Count"  />
+
+
+    <Button
+
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:text="@string/add"
+        android:textColor="@color/black" />
+
+</LinearLayout>

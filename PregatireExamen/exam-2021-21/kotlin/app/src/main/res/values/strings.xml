@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ParkingApp</string>
+    <string name="manager">Manager section</string>
+    <string name="users">Users section</string>
+    <string name="stats">Stats section</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="update">Take</string>
+</resources>
