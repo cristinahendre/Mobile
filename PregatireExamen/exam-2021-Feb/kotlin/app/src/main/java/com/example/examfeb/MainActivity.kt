@@ -31,6 +31,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ReportsActivity::class.java)
             startActivity(intent)
         }
+
+        val driver = findViewById<Button>(R.id.driver)
+        driver.setOnClickListener {
+            val intent = Intent(this@MainActivity, DriverActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

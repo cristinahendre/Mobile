@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.NumberFormatException
 
 class AddVehicleActivity : AppCompatActivity() {
 
@@ -53,47 +54,53 @@ class AddVehicleActivity : AppCompatActivity() {
         button.setOnClickListener { view: View ->
             val replyIntent = Intent()
             progress.show()
-            var vehicle = Vehicle(
-                0, license.text.toString(), status.text.toString(),
-                seats.text.toString().toInt(), driver.text.toString(), color.text.toString(),
-                cargo.text.toString().toInt(), 0
-            )
-            GlobalScope.launch(Dispatchers.Main) {
-                val resp = model.add(vehicle)
-                logd("My response in add $resp")
-                if (resp != null) {
-                    if (resp == "off") {
-                        //the server is down
-                        displayMessageToast("The server is down.")
-                        vehicle.changed = 1
-                        vehicleViewModel.insert(vehicle)
-                        setResult(Activity.RESULT_OK, replyIntent)
-                        progress.dismiss()
-                        finish()
-                    } else {
-                        val id = getId(resp)
-                        logd("id computed $id")
-                        if (id == -1) {
-                            displayMessageToast(resp)
-                            progress.dismiss()
-                        } else {
-                            vehicle.changed = 0
-                            vehicle.id = id
-                            vehicleViewModel.insert(vehicle)
+            try {
+                var vehicle = Vehicle(
+                    0, license.text.toString(), status.text.toString(),
+                    seats.text.toString().toInt(), driver.text.toString(), color.text.toString(),
+                    cargo.text.toString().toInt(), 0
+                )
 
-                            val msg = "The driver " + getDriver(resp) + " whose car has " +
-                                    getSeats(resp) + " received the license: " + getLicense(resp)
-                            logd(msg)
-                            displayMessageToast(msg)
+                GlobalScope.launch(Dispatchers.Main) {
+                    val resp = model.add(vehicle)
+                    logd("My response in add $resp")
+                    if (resp != null) {
+                        if (resp == "off") {
+                            //the server is down
+                            displayMessageToast("The server is down.")
+                            vehicle.changed = 1
+                            vehicleViewModel.insert(vehicle)
                             setResult(Activity.RESULT_OK, replyIntent)
                             progress.dismiss()
                             finish()
+                        } else {
+                            val id = getId(resp)
+                            logd("id computed $id")
+                            if (id == -1) {
+                                displayMessageToast(resp)
+                                progress.dismiss()
+                            } else {
+                                vehicle.changed = 0
+                                vehicle.id = id
+                                vehicleViewModel.insert(vehicle)
+
+                                val msg = "The driver " + getDriver(resp) + " whose car has " +
+                                        getSeats(resp) + " received the license: " + getLicense(resp)
+                                logd(msg)
+                                displayMessageToast(msg)
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                progress.dismiss()
+                                finish()
+                            }
                         }
+                    } else {
+                        displayMessageToast("There is some trouble.")
+                        progress.dismiss()
                     }
-                } else {
-                    displayMessageToast("There is some trouble.")
-                    progress.dismiss()
                 }
+            } catch (e: NumberFormatException) {
+                showErrorMessage("Invalid data fields.")
+                progress.dismiss()
             }
         }
 

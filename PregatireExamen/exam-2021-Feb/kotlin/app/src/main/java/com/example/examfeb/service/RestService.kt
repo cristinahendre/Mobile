@@ -31,13 +31,16 @@ object RestService {
         @GET("vehicles/{color}")
         suspend fun getVehiclesByColor(@Path("color") color:String): List<Vehicle>
 
+        @GET("driver/{name}")
+        suspend fun getDriversVehicles(@Path("name") name:String): List<Vehicle>
+
         @DELETE("vehicle/{id}")
         suspend fun deleteVehicle(@Path("id") id: Int): Response<Vehicle>
 
         @POST("vehicle")
         suspend fun add(
             @Body vehicle: VehicleCredentials
-        ): Response<Vehicle>
+        ): Response<Vehicle>?
 
         @PUT("grade")
         suspend fun update(

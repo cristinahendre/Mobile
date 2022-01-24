@@ -40,7 +40,6 @@ class TenVehiclesActivity : AppCompatActivity() {
 
         vehicleViewModel = ViewModelProviders.of(this).get(VehicleViewModel::class.java)
         adapter = VehicleAdapter(this)
-        vehicleViewModel.deleteAll()
         fetchData()
         setupRecyclerView(findViewById(R.id.recyclerview))
         observeModel()
@@ -122,10 +121,9 @@ class TenVehiclesActivity : AppCompatActivity() {
 
     }
 
-
     private fun observeModel() {
-        vehicleViewModel.getVehiclesOrdered()
-        vehicleViewModel.allVehicles?.observe { displayVehicles(it ?: emptyList()) }
+//        vehicleViewModel.getVehiclesOrdered()
+//        vehicleViewModel.allVehicles?.observe { displayVehicles(it ?: emptyList()) }
 
     }
 
@@ -142,13 +140,12 @@ class TenVehiclesActivity : AppCompatActivity() {
             } else {
                 val mySorted : List<Vehicle> = myGrades.sortedByDescending {  it.seats}
                 logd("data sorted $mySorted")
-                var i =0
-                for(vehicle:Vehicle in mySorted){
-                    if(i == 10 ) break
-                    vehicleViewModel.insert(vehicle)
-                    i++
+                myGrades= mutableListOf()
+                for ( i in mySorted.indices){
+                    if(i == 10) break
+                    myGrades.add(mySorted[i])
                 }
-
+                logd("display $myGrades")
                 displayVehicles(myGrades)
             }
             progress.dismiss()

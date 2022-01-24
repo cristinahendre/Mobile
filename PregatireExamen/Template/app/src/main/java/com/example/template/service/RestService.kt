@@ -1,6 +1,4 @@
 package com.example.template.service
-
-import android.annotation.SuppressLint
 import android.util.AndroidRuntimeException
 import com.example.template.domain.Person
 import com.example.template.logd
@@ -12,14 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.lang.NullPointerException
-import java.lang.reflect.Type
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
+
 import java.util.concurrent.TimeUnit
 
 

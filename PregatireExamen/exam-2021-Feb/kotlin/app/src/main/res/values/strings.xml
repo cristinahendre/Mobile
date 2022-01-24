@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">ExamFeb</string>
     <string name="add">Add</string>
+    <string name="choose">Choose driver</string>
     <string name="registration">Registration</string>
     <string name="manage">Manage</string>
     <string name="reports">Reports</string>
+    <string name="driver">Driver</string>
     <string name="tenvehicles">Top 10 Vehicles</string>
+    <string name="tendrivers">Top 10 Drivers</string>
+    <string name="biggestCars">Top 5 Vehicles(cargo)</string>
+
 </resources>

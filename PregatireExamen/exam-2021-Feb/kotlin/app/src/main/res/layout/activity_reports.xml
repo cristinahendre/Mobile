@@ -20,6 +20,27 @@
             android:text="@string/tenvehicles"
             android:textColor="@color/black" />
 
+        <Button
+
+            android:id="@+id/tenDrivers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow"
+            android:text="@string/tendrivers"
+            android:textColor="@color/black" />
+
+
+        <Button
+
+            android:id="@+id/biggestCars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow"
+            android:text="@string/biggestCars"
+            android:textColor="@color/black" />
+
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

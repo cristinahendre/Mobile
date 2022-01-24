@@ -36,19 +36,25 @@ class Model : ViewModel() {
 
     suspend fun getTenVehicles(): List<Vehicle>? {
         val res = NetworkRepository.getTenVehicles()
-        logd("[model-get ten vehicles] $res")
+        logd("[model-get ten vehicles] ")
         return res
     }
 
     suspend fun getVehiclesByColor(color:String): List<Vehicle>? {
         val res = NetworkRepository.getVehiclesByColor(color)
-        logd("[model-get vehicles by color] $res")
+        logd("[model-get vehicles by color] ")
+        return res
+    }
+
+    suspend fun getDriversVehicles(color:String): List<Vehicle>? {
+        val res = NetworkRepository.getDriversVehicles(color)
+        logd("[model-get vehicles by driver] ")
         return res
     }
 
     suspend fun getColors(): List<String>? {
         val res = NetworkRepository.getColors()
-        logd("[model-get colors] $res")
+        logd("[model-get colors] ")
         return res
     }
 

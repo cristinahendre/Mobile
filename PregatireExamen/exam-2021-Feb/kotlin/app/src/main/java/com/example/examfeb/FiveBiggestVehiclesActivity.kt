@@ -1,13 +1,10 @@
 package com.example.examfeb
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,20 +15,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.examfeb.domain.Vehicle
 import com.example.examfeb.models.Model
 import com.example.examfeb.viewmodel.VehicleViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class ColorActivity : AppCompatActivity() {
+class FiveBiggestVehiclesActivity : AppCompatActivity() {
 
     private val model: Model by viewModels()
     private lateinit var vehicleViewModel: VehicleViewModel
     private lateinit var adapter: VehicleAdapter
     private lateinit var progress: ProgressDialog
-    private lateinit var color: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +36,7 @@ class ColorActivity : AppCompatActivity() {
         progress.setCancelable(false)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_color)
-        val extras = intent.extras
-        if (extras != null) {
-            color = extras.getString("Color")!!
-        }
+        setContentView(R.layout.activity_5biggest)
 
         vehicleViewModel = ViewModelProviders.of(this).get(VehicleViewModel::class.java)
         adapter = VehicleAdapter(this)
@@ -96,18 +87,11 @@ class ColorActivity : AppCompatActivity() {
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val licenseItemView: TextView = itemView.findViewById(R.id.license)
-            val statusItemView: TextView = itemView.findViewById(R.id.status)
             val seatsItemView: TextView = itemView.findViewById(R.id.seats)
-            val driverItemView: TextView = itemView.findViewById(R.id.driver)
-            val colorItemView: TextView = itemView.findViewById(R.id.color)
-            val cargoItemView: TextView = itemView.findViewById(R.id.cargo)
-            val ivDelete: Button = itemView.findViewById(R.id.ivDelete)
-
         }
 
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemView = inflater.inflate(R.layout.color_item, parent, false)
+            val itemView = inflater.inflate(R.layout.item_biggest5, parent, false)
             return ViewHolder(itemView)
         }
 
@@ -116,19 +100,10 @@ class ColorActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.Main) {
 
                 holder.licenseItemView.text = current.license
-                holder.statusItemView.text = current.status
                 holder.seatsItemView.text = current.seats.toString()
-                holder.driverItemView.text = current.driver
-                holder.statusItemView.text = current.status
-                holder.colorItemView.text = current.color
-                holder.cargoItemView.text = current.cargo.toString()
-            }
-            holder.ivDelete.setOnClickListener {
-                logd("delete $current")
-                delete(current)
-
 
             }
+
         }
 
         internal fun setVehicles(all: List<Vehicle>) {
@@ -140,26 +115,7 @@ class ColorActivity : AppCompatActivity() {
 
     }
 
-    private fun delete(vehicle: Vehicle) {
-
-        GlobalScope.launch(Dispatchers.Main) {
-            progress.show()
-
-            val resp = model.delete(vehicle.id)
-            if (resp == "off") {
-                displayMessage("The server is down, please retry.")
-            } else if (resp != vehicle.toString()) {
-                displayMessage(resp)
-            } else {
-                vehicleViewModel.delete(vehicle.id)
-            }
-            progress.dismiss()
-        }
-    }
-
     private fun observeModel() {
-        vehicleViewModel.getVehicles()
-        vehicleViewModel.allVehicles?.observe { displayVehicles(it ?: emptyList()) }
 
     }
 
@@ -169,16 +125,25 @@ class ColorActivity : AppCompatActivity() {
 
             vehicleViewModel.getVehiclesChanged()
             vehicleViewModel.vehiclesChanged?.observe { }
-            val myGrades = model.getVehiclesByColor(color)
-            logd("my vehicles in activity $myGrades")
+            var myGrades = model.getTenVehicles()
             if (myGrades == null) {
                 //the server is off
                 displayMessage("The server is down. Please retry.")
             } else {
+                val mySorted: List<Vehicle> = myGrades.sortedByDescending { it.cargo }
+                logd("list sorted $mySorted")
+                myGrades = mutableListOf()
+                var i = 0
+                for (value in mySorted) {
+                    if (i == 5) break
+                    myGrades.add(value)
+                    i += 1
+                }
+                myGrades = myGrades.sortedByDescending { it.cargo }
+                logd("display $myGrades")
                 displayVehicles(myGrades)
             }
             progress.dismiss()
-
 
         }
     }
@@ -195,6 +160,6 @@ class ColorActivity : AppCompatActivity() {
 
 
     private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
-        observe(this@ColorActivity, { observe(it) })
+        observe(this@FiveBiggestVehiclesActivity, { observe(it) })
 
 }
