@@ -21,6 +21,9 @@ object RestService {
         @GET("items")
         suspend fun getAll(): List<Item>
 
+        @GET("bought")
+        suspend fun getBoughtItems(): List<Item>
+
         @DELETE("item/{id}")
         suspend fun delete(@Path("id") id: Int): Response<Item>
 
@@ -28,7 +31,7 @@ object RestService {
         suspend fun add(
             @Body grade: ItemCredentials): Response<Item>
 
-        @PUT("person")
+        @POST("buy")
         suspend fun update(
             @Body grade: ItemCredentials
         ): Response<Item>

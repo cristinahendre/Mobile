@@ -9,9 +9,9 @@ import com.example.template.repository.NetworkRepository
 
 class Model : ViewModel() {
     private var authToken: String? = null
-    private val mutablePeople = MutableLiveData<List<Item>>().apply { value = emptyList() }
+    private val mutableLiveData = MutableLiveData<List<Item>>().apply { value = emptyList() }
 
-    val people: LiveData<List<Item>> = mutablePeople
+    val liveData: LiveData<List<Item>> = mutableLiveData
 
     suspend fun delete(id: Int): String {
         val response = NetworkRepository.delete(id)
@@ -36,7 +36,13 @@ class Model : ViewModel() {
     suspend fun getAll(): List<Item>? {
         val res = NetworkRepository.getAll()
         logd("[model-get all]")
-        mutablePeople.value = res
+        mutableLiveData.value = res
+        return res
+    }
+
+    suspend fun getBoughtItems(): List<Item>? {
+        val res = NetworkRepository.getBoughtItems()
+        logd("[model-get bought items]")
         return res
     }
 }

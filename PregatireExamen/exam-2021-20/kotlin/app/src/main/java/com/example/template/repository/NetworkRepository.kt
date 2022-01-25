@@ -20,6 +20,17 @@ object NetworkRepository {
         }
     }
 
+    suspend fun getBoughtItems(): List<Item>? {
+        return try {
+
+            val result = RestService.service?.getBoughtItems()
+            logd("[get bought network] $result")
+            result
+        } catch (e: Exception) {
+            null
+        }
+    }
+
 
     suspend fun delete(id: Int): String {
 

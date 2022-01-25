@@ -3,7 +3,6 @@ package com.example.template
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
@@ -17,13 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.template.domain.Item
 import com.example.template.model.Model
 import com.example.template.viewmodel.ItemViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ItemsActivity : AppCompatActivity() {
+class ShoppingActivity : AppCompatActivity() {
     private lateinit var itemViewModel: ItemViewModel
     private val model: Model by viewModels()
     private lateinit var adapter: ListAdapter
@@ -33,7 +31,7 @@ class ItemsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_items)
+        setContentView(R.layout.activity_shopping)
         progress = ProgressDialog(this)
         progress.setTitle("Loading")
         progress.setMessage("Please wait...")
@@ -41,15 +39,11 @@ class ItemsActivity : AppCompatActivity() {
         view = View(this)
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
         adapter = ListAdapter(this)
+        itemViewModel.deleteAll()
         fetchData()
         setupRecyclerView(findViewById(R.id.recyclerview))
         observeModel()
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            val intent = Intent(this@ItemsActivity, AddActivity::class.java)
-            startActivity(intent)
-        }
 
     }
 
@@ -63,7 +57,6 @@ class ItemsActivity : AppCompatActivity() {
             R.id.retry -> {
                 logd("retry clicked")
                 GlobalScope.launch(Dispatchers.Main) {
-                    areChangesToBeDone()
                     fetchData()
                     observeModel()
                 }
@@ -86,11 +79,11 @@ class ItemsActivity : AppCompatActivity() {
             val idItemView: TextView = itemView.findViewById(R.id.id)
             val statusItemView: TextView = itemView.findViewById(R.id.status)
             val quantityItemView: TextView = itemView.findViewById(R.id.quantity)
-            val ivDelete: Button = itemView.findViewById(R.id.ivDelete)
+            val ivBuy: Button = itemView.findViewById(R.id.ivBuy)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
-            val itemView = inflater.inflate(R.layout.recycler_item, parent, false)
+            val itemView = inflater.inflate(R.layout.buy_item, parent, false)
             return PeopleViewHolder(itemView)
         }
 
@@ -101,9 +94,9 @@ class ItemsActivity : AppCompatActivity() {
             holder.quantityItemView.text = current.quantity.toString()
             holder.statusItemView.text = current.status
 
-            holder.ivDelete.setOnClickListener {
-                logd("to delete $current")
-                delete(current)
+            holder.ivBuy.setOnClickListener {
+                logd("to buy $current")
+                buy(current)
 
             }
         }
@@ -118,130 +111,29 @@ class ItemsActivity : AppCompatActivity() {
 
     }
 
-    private fun delete(space: Item) {
+    private fun buy(space: Item) {
         GlobalScope.launch(Dispatchers.Main) {
             progress.show()
-            val result = model.delete(space.id)
+            val result = model.update(space)
             logd("server response = $result")
             if (result == "off") {
                 //the server is off
-                space.changed = 2
-                itemViewModel.update(space)
+                displayMessage("The server is down. You cannot buy offline.")
             }  else {
-                itemViewModel.delete(space.id)
-            }
-            progress.dismiss()
-        }
-    }
-
-
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        itemViewModel.items
-            ?.observe(this, { myGrades ->
-                if (myGrades != null) {
-                    adapter.setItems(myGrades)
+                val obj= deserialize(result)
+                logd("deserializat $obj")
+                if(obj!=null)  {
+                    space.status = obj.status
+                    itemViewModel.update(space)
                 }
-            })
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun fetchData() {
-        GlobalScope.launch(Dispatchers.Main) {
-
-            progress.show()
-            itemViewModel.getItemsChanged()
-            itemViewModel.itemsChanged?.observe { }
-            val myGrades = model.getAll()
-            if (myGrades == null) {
-                //the server is off
-                displayMessage("The server is down, using local data.")
-            } else {
-                areChangesToBeDone()
-                itemViewModel.insertAll(myGrades)
-                logd("done inserting")
-            }
-            progress.dismiss()
-
-        }
-    }
-
-
-    private fun displayData(gr: List<Item>) {
-        adapter.setItems(gr)
-    }
-
-    private fun observeModel() {
-        itemViewModel.getAll()
-        itemViewModel.items?.observe { displayData(it ?: emptyList()) }
-    }
-
-    private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
-        observe(this@ItemsActivity, { observe(it) })
-
-    private fun displayMessage(myMessage: String) {
-        val parentLayout: View = findViewById(android.R.id.content)
-        Snackbar.make(parentLayout, myMessage, Snackbar.LENGTH_LONG)
-            .setAction("CLOSE") { }
-            .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
-            .show()
-    }
-
-    private suspend fun areChangesToBeDone(): Boolean {
-        val dbGrades = itemViewModel.itemsChanged?.value
-        progress.show()
-        try {
-            if (dbGrades != null) {
-                if (dbGrades != null) {
-                    for (gr: Item in dbGrades) {
-                        logd(gr)
-                        if (gr.changed == 1) {
-                            //to add
-                            gr.changed = 0
-                            val res = model.add(gr)
-                            if (res != "off") {
-                                val myObj =deserialize(res)
-                                if(myObj!=null){
-                                    gr.id =myObj.id
-                                    gr.status = myObj.status
-                                    itemViewModel.update(gr)
-                                    displayMessage(
-                                        "The item ${myObj.name} with" +
-                                                "the price ${myObj.price} was saved in quantity of" +
-                                                "${myObj.quantity}; the status is ${myObj.status}"
-                                    )
-
-                                }
-                            } else {
-                                gr.changed = 1
-                            }
-                        }
-                        if (gr.changed == 2) {
-                            //to delete
-                            gr.changed = 0
-                            val res = model.delete(gr.id)
-                            if (res != "off") {
-                                itemViewModel.delete(gr.id)
-                            } else gr.changed = 2
-                        }
-                        if (gr.changed == 3) {
-                            //to update
-                            gr.changed = 0
-                            val res = model.update(gr)
-                            if (res != "off") {
-                                itemViewModel.update(gr)
-                            } else gr.changed = 3
-                        }
-                    }
+                else{
+                    displayMessage("An error occured.")
                 }
             }
-        } catch (e: Exception) {
             progress.dismiss()
-            return false
         }
-        progress.dismiss()
-        return true
     }
+
 
     private fun deserialize(myString: String): Item? {
         //Item(id=0, name=a, quantity=2, status=ned, price=82, changed=0)
@@ -276,6 +168,51 @@ class ItemsActivity : AppCompatActivity() {
             if (i in start..end) result += myMessage[i]
         }
         return result
+    }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun fetchData() {
+        GlobalScope.launch(Dispatchers.Main) {
+
+            progress.show()
+            itemViewModel.getItemsChanged()
+            itemViewModel.itemsChanged?.observe { }
+            val myGrades = model.getAll()
+            if (myGrades == null) {
+                //the server is off
+                displayMessage("The server is down, retry.")
+            } else {
+                itemViewModel.insertAll(myGrades)
+                logd("done inserting")
+            }
+            progress.dismiss()
+
+        }
+    }
+
+
+    private fun displayData(gr: List<Item>) {
+        adapter.setItems(gr)
+    }
+
+    private fun observeModel() {
+        itemViewModel.getItemsAvailable()
+        itemViewModel.itemsAvailable?.observe { displayData(it ?: emptyList()) }
+    }
+
+    private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
+        observe(this@ShoppingActivity, { observe(it) })
+
+    private fun displayMessage(myMessage: String) {
+        val parentLayout: View = findViewById(android.R.id.content)
+        Snackbar.make(parentLayout, myMessage, Snackbar.LENGTH_LONG)
+            .setAction("CLOSE") { }
+            .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
+            .show()
     }
 
 }

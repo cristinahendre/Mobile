@@ -18,6 +18,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val shopping = findViewById<Button>(R.id.shopping)
+        shopping.setOnClickListener {
+            val intent = Intent(this@MainActivity, ShoppingActivity::class.java)
+            startActivity(intent)
+        }
+
+        val stats = findViewById<Button>(R.id.stats)
+        stats.setOnClickListener {
+            val intent = Intent(this@MainActivity, StatsActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
 

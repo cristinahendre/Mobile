@@ -15,6 +15,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ItemRepository
 
     var items: LiveData<List<Item>>? = null
+    var itemsAvailable: LiveData<List<Item>>? = null
     var itemsChanged: LiveData<List<Item>>? = null
 
     init {
@@ -58,6 +59,12 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     fun getItemsChanged() {
         logd("get all  changed in view model")
         itemsChanged = repository.getItemsChanged()
+
+    }
+
+    fun getItemsAvailable() {
+        logd("get all  available in view model")
+        itemsAvailable = repository.getAllAvailable()
 
     }
 

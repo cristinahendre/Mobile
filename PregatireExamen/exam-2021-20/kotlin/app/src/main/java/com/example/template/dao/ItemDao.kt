@@ -10,6 +10,9 @@ interface ItemDao {
     @Query("SELECT * FROM items where changed!=2")
     fun getAll(): LiveData<List<Item>>
 
+    @Query("SELECT * FROM items where (changed!=2) and (status == 'desired' or status == 'needed') order by price,quantity")
+    fun getAllAvailable(): LiveData<List<Item>>
+
     @Query("SELECT * FROM items where changed != 0")
     fun getItemsChanged(): LiveData<List<Item>>
 

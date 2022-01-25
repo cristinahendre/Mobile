@@ -29,6 +29,11 @@ class ItemRepository(private val itemDao: ItemDao) {
     }
 
 
+    fun getAllAvailable(): LiveData<List<Item>>{
+        return itemDao.getAllAvailable()
+    }
+
+
     suspend fun delete(id: Int) {
         logd("delete id in repo, id= $id")
         itemDao.delete(id)

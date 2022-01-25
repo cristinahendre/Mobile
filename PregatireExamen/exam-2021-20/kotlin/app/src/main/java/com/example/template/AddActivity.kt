@@ -131,11 +131,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun showErrorMessage(myMessage: String) {
-//        val parentLayout: View = findViewById(android.R.id.content)
-//        Snackbar.make(parentLayout, myMessage, Snackbar.LENGTH_LONG)
-//            .setAction("CLOSE") { }
-//            .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
-//            .show()
+
         Toast.makeText(this,myMessage,Toast.LENGTH_SHORT).show()
     }
 
