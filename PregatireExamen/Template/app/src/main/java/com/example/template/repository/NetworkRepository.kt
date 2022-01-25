@@ -13,7 +13,7 @@ object NetworkRepository {
                 return null
             }
             val result = RestService.service.getAll()
-            logd("[get all ] $result")
+            logd("[get all network] $result")
             return result
         } catch (e: Exception) {
             return null
@@ -21,58 +21,55 @@ object NetworkRepository {
     }
 
 
-    suspend fun delete(id: Int): Int {
+    suspend fun delete(id: Int): String {
 
         //0=OK, -1 = Server down, 1= error
         try {
-            logd("[delete]")
+            logd("[delete $id network]")
             if (RestService.service != null) {
                 val msg = RestService.service.delete(id)
-                if (msg.body() != "OK") {
-                    return 1
-                }
-                return 0
+                return msg.body().toString()
             }
-            return -1
+            return "off"
         } catch (e: Exception) {
-            return -1
+            return "off"
         }
     }
 
 
-    suspend fun add(person: Person): Int {
+    suspend fun add(person: Person): String {
         try {
-            logd("[ add ]")
+            logd("[add $person network]")
             if (RestService.service != null) {
                 return RestService.service.add(
                     PersonCredentials(
                         person.id,
                         person.name, person.age, person.changed
                     )
-                ).body() ?: return -1
+                ).body().toString()
             }
-            return -1
+            return "off"
+
         } catch (e: Exception) {
-            return -1
+            return "off"
         }
     }
 
-    suspend fun update(person: Person): Int {
+    suspend fun update(person: Person): String {
         try {
-            logd("[update]")
+            logd("[add $person network]")
             if (RestService.service != null) {
-                val msg = RestService.service.update(
+                return RestService.service.update(
                     PersonCredentials(
                         person.id,
                         person.name, person.age, person.changed
                     )
-                ).body()
-                if (msg == "OK") return 0
-                return 1
+                ).body().toString()
             }
-            return -1
+            return "off"
+
         } catch (e: Exception) {
-            return -1
+            return "off"
         }
     }
 

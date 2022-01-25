@@ -7,7 +7,7 @@ import com.example.template.domain.Person
 @Dao
 interface PersonDao {
 
-    @Query("SELECT * FROM people ")
+    @Query("SELECT * FROM people where changed!=2")
     fun getAll(): LiveData<List<Person>>
 
     @Query("SELECT * FROM people where changed != 0")

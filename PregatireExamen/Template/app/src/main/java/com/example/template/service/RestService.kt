@@ -22,17 +22,16 @@ object RestService {
         suspend fun getAll(): List<Person>
 
         @DELETE("{id}")
-        suspend fun delete(@Path("id") id: Int): Response<String>
+        suspend fun delete(@Path("id") id: Int): Response<Person>
 
         @POST("person")
         suspend fun add(
-            @Body grade: PersonCredentials): Response<Int>
-
+            @Body grade: PersonCredentials): Response<Person>
 
         @PUT("person")
         suspend fun update(
             @Body grade: PersonCredentials
-        ): Response<String>
+        ): Response<Person>
 
     }
 

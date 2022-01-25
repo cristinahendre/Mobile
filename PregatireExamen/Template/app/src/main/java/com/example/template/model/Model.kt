@@ -14,20 +14,20 @@ class Model : ViewModel() {
 
     val people: LiveData<List<Person>> = mutablePeople
 
-    suspend fun delete(id: Int): Int {
+    suspend fun delete(id: Int): String {
         val response = NetworkRepository.delete(id)
         logd("[model- delete]")
         return response
     }
 
-    suspend fun add(gr: Person): Int {
+    suspend fun add(gr: Person): String {
         val myId = NetworkRepository.add(gr)
-        logd("[model- add: new id = $myId")
+        logd("[model- add]")
         return myId
 
     }
 
-    suspend fun update(gr: Person): Int {
+    suspend fun update(gr: Person): String {
         val resp = NetworkRepository.update(gr)
         logd("[model - update ] $resp")
         return resp
@@ -36,7 +36,7 @@ class Model : ViewModel() {
 
     suspend fun getAll(): List<Person>? {
         val res = NetworkRepository.getAll()
-        logd("[model-get all] $res")
+        logd("[model-get all]")
         mutablePeople.value = res
         return res
     }
