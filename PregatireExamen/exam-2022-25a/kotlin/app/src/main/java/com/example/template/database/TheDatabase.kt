@@ -3,31 +3,31 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.template.dao.PersonDao
-import com.example.template.domain.Person
+import com.example.template.dao.MyDao
+import com.example.template.domain.Produs
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [Person::class], version = 1)
-abstract class PersonDatabase: RoomDatabase() {
-    abstract fun personDao(): PersonDao
+@Database(entities = [Produs::class], version = 2)
+abstract class TheDatabase: RoomDatabase() {
+    abstract fun myDao(): MyDao
 
     companion object {
         @Volatile
-        private var INSTANCE: PersonDatabase? = null
+        private var INSTANCE: TheDatabase? = null
 
         fun getDatabase(
             context: Context,
             scope: CoroutineScope
-        ): PersonDatabase {
+        ): TheDatabase {
 
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    PersonDatabase::class.java,
+                    TheDatabase::class.java,
                     "grade_db"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(GradeDatabaseCallback(scope))
+                    .addCallback(MyDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 // return instance
@@ -35,7 +35,7 @@ abstract class PersonDatabase: RoomDatabase() {
             }
         }
 
-        private class GradeDatabaseCallback(
+        private class MyDatabaseCallback(
             private val scope: CoroutineScope
         ) : RoomDatabase.Callback() {
 

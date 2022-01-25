@@ -4,38 +4,38 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.template.database.PersonDatabase
-import com.example.template.domain.Person
+import com.example.template.database.TheDatabase
+import com.example.template.domain.Produs
 import com.example.template.logd
-import com.example.template.repository.PersonRepository
+import com.example.template.repository.DbRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PersonViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PersonRepository
+class MyViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository: DbRepository
 
-    var people: LiveData<List<Person>>? = null
-    var peopleChanged: LiveData<List<Person>>? = null
+    var data: LiveData<List<Produs>>? = null
+    var changedData: LiveData<List<Produs>>? = null
 
     init {
-        val gradeDao = PersonDatabase.getDatabase(application, viewModelScope).personDao()
-        repository = PersonRepository(gradeDao)
+        val gradeDao = TheDatabase.getDatabase(application, viewModelScope).myDao()
+        repository = DbRepository(gradeDao)
     }
 
-    fun insertAll(gr: List<Person>) = viewModelScope.launch(Dispatchers.IO) {
+    fun insertAll(gr: List<Produs>) = viewModelScope.launch(Dispatchers.IO) {
         logd("insert all in view model")
         repository.deleteAll()
         repository.insertAll(gr)
     }
 
 
-    fun insert(gr: Person) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(gr: Produs) = viewModelScope.launch(Dispatchers.IO) {
         logd("insert in  view model: $gr")
         repository.insert(gr)
     }
 
-    fun update(gr: Person) = viewModelScope.launch(Dispatchers.IO) {
-        logd("update in view model")
+    fun update(gr: Produs) = viewModelScope.launch(Dispatchers.IO) {
+        logd("update in view model: $gr")
         repository.update(gr)
     }
 
@@ -50,14 +50,14 @@ class PersonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
-    fun getPeople() {
+    fun getAll() {
         logd("get all in view model")
-        people = repository.allPeople
+        data = repository.allData
     }
 
-    fun getPeopleChanged() {
+    fun getAllChanged() {
         logd("get all  changed in view model")
-        peopleChanged = repository.getPeopleChanged()
+        changedData = repository.getAllChanged()
 
     }
 

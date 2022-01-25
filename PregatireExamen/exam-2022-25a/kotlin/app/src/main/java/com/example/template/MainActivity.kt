@@ -13,9 +13,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val section = findViewById<Button>(R.id.section)
-        section.setOnClickListener {
-            val intent = Intent(this@MainActivity, SectionActivity::class.java)
+        val magazioner = findViewById<Button>(R.id.magazioner)
+        magazioner.setOnClickListener {
+            val intent = Intent(this@MainActivity, MagazionerActivity::class.java)
+            startActivity(intent)
+        }
+
+        val client = findViewById<Button>(R.id.client)
+        client.setOnClickListener {
+            val intent = Intent(this@MainActivity, ClientActivity::class.java)
             startActivity(intent)
         }
     }

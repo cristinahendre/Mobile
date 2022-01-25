@@ -1,13 +1,13 @@
 package com.example.template.repository
 
-import com.example.template.domain.Person
+import com.example.template.domain.Produs
 import com.example.template.logd
-import com.example.template.service.PersonCredentials
+import com.example.template.service.ProductCredentials
 import com.example.template.service.RestService
 
 object NetworkRepository {
 
-    suspend fun getAll(): List<Person>? {
+    suspend fun getAll(): List<Produs>? {
         try {
             if (RestService.service == null) {
                 return null
@@ -37,14 +37,15 @@ object NetworkRepository {
     }
 
 
-    suspend fun add(person: Person): String {
+    suspend fun add(product: Produs): String {
         try {
-            logd("[add $person network]")
+            logd("[add $product network]")
             if (RestService.service != null) {
                 return RestService.service.add(
-                    PersonCredentials(
-                        person.id,
-                        person.name, person.age, person.changed
+                    ProductCredentials(
+                        product.id,
+                        product.nume, product.tip, product.cantitate,product.pret,
+                        product.discount,product.status,product.changed
                     )
                 ).body().toString()
             }
@@ -55,14 +56,15 @@ object NetworkRepository {
         }
     }
 
-    suspend fun update(person: Person): String {
+    suspend fun update(product: Produs): String {
         try {
-            logd("[update $person network]")
+            logd("[update $product network]")
             if (RestService.service != null) {
                 return RestService.service.update(
-                    PersonCredentials(
-                        person.id,
-                        person.name, person.age, person.changed
+                    ProductCredentials(
+                        product.id,
+                        product.nume, product.tip, product.cantitate,product.pret,
+                        product.discount,product.status,product.changed
                     )
                 ).body().toString()
             }

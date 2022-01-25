@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.template.domain.Person
 import com.example.template.model.Model
-import com.example.template.viewmodel.PersonViewModel
+import com.example.template.viewmodel.MyViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +27,7 @@ class AddActivity : AppCompatActivity() {
     private val model: Model by viewModels()
     private var isUpdate = false
     private lateinit var progress: ProgressDialog
-    private lateinit var personViewModel: PersonViewModel
+    private lateinit var personViewModel: MyViewModel
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class AddActivity : AppCompatActivity() {
         progress.setTitle("Loading")
         progress.setMessage("Please wait...")
         progress.setCancelable(false)
-        personViewModel = ViewModelProviders.of(this).get(PersonViewModel::class.java)
+        personViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
         name = findViewById(R.id.name)
         age = findViewById(R.id.age)
         button = findViewById(R.id.button_save)

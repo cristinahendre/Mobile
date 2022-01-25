@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddActivity" />
-        <activity android:name=".SectionActivity" />
+        <activity android:name=".ClientActivity" />
+        <activity android:name=".MagazionerActivity" />
     </application>
 
 </manifest>
