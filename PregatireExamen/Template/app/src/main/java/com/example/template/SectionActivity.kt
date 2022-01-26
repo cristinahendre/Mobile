@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProviders
@@ -80,7 +81,7 @@ class SectionActivity : AppCompatActivity() {
 
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         private val builder = AlertDialog.Builder(context)
-        private var people = mutableListOf<Person>()
+        private var data = mutableListOf<Person>()
 
         inner class PeopleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val nameItemView: TextView = itemView.findViewById(R.id.name)
@@ -95,7 +96,7 @@ class SectionActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-            val current = people[position]
+            val current = data[position]
             holder.nameItemView.text = current.name
             holder.ageItemView.text = current.age.toString()
 
@@ -113,13 +114,13 @@ class SectionActivity : AppCompatActivity() {
         }
 
 
-        internal fun setPeople(myGrades: List<Person>) {
-            this.people.clear()
-            this.people.addAll(myGrades)
+        internal fun setData(myData: List<Person>) {
+            this.data.clear()
+            this.data.addAll(myData)
             notifyDataSetChanged()
         }
 
-        override fun getItemCount() = people.size
+        override fun getItemCount() = data.size
 
     }
 
@@ -155,7 +156,7 @@ class SectionActivity : AppCompatActivity() {
         personViewModel.data
             ?.observe(this, { myGrades ->
                 if (myGrades != null) {
-                    adapter.setPeople(myGrades)
+                    adapter.setData(myGrades)
                 }
             })
         recyclerView.adapter = adapter
@@ -184,7 +185,7 @@ class SectionActivity : AppCompatActivity() {
 
 
     private fun displayData(gr: List<Person>) {
-        adapter.setPeople(gr)
+        adapter.setData(gr)
     }
 
     private fun observeModel() {
@@ -216,7 +217,16 @@ class SectionActivity : AppCompatActivity() {
                             gr.changed = 0
                             val res = model.add(gr)
                             if (res != "off") {
-                                personViewModel.insert(gr)
+                                val myObj =deserialize(res)
+                                if(myObj!=null) {
+                                    displayFinalMessage(myObj)
+                                    personViewModel.delete(gr.id)
+                                    gr.id = myObj.id
+                                    personViewModel.insert(gr)
+                                }
+                                else{
+                                    displayMessage("Error when saving.")
+                                }
                             } else gr.changed = 1
                         }
                         if (gr.changed == 2) {
@@ -244,6 +254,36 @@ class SectionActivity : AppCompatActivity() {
         }
         progress.dismiss()
         return true
+    }
+
+    private fun displayFinalMessage(person: Person) {
+        val text = "The person with the name ${person.name} has ${person.age} years."
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun deserialize(myString: String): Person? {
+
+        try {
+            var indexStart = myString.indexOf("id") + 3
+            var indexStop = myString.indexOf("name") - 3
+            val id = getStringFromArea(indexStart, indexStop, myString).toInt()
+            if (id == 0) {
+                return null
+            }
+            return Person(id,"",0,0)
+        } catch (e: NumberFormatException) {
+            logd("exceptie la deserializare $e")
+            return null
+        }
+
+    }
+
+    private fun getStringFromArea(start: Int, end: Int, myMessage: String): String {
+        var result = ""
+        for (i in myMessage.indices) {
+            if (i in start..end) result += myMessage[i]
+        }
+        return result
     }
 
 }

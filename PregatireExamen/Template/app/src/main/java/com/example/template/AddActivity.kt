@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -22,7 +23,7 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var name: EditText
     private lateinit var age: EditText
-    private var id: Int =0
+    private var id: Int = 0
     private lateinit var button: Button
     private val model: Model by viewModels()
     private var isUpdate = false
@@ -56,11 +57,11 @@ class AddActivity : AppCompatActivity() {
         button.setOnClickListener { view: View ->
             val replyIntent = Intent()
             try {
-                if (name.text.toString() == " " || name.text.toString() == "") {
-                    showErrorMessage("Invalid name.")
-                    progress.dismiss()
+
+                val person = Person(0, name.text.toString(), age.text.toString().toInt(), 0)
+                if (person.name == "" || person.name == " " || person.age < 0) {
+                    showErrorMessage("Invalid data.")
                 } else {
-                    val person = Person(0, name.text.toString(), age.text.toString().toInt(), 0)
                     GlobalScope.launch(Dispatchers.Main) {
                         if (isUpdate) {
                             progress.show()
@@ -76,17 +77,22 @@ class AddActivity : AppCompatActivity() {
 
                         } else {
                             progress.show()
-                            val myId = model.add(person)
-                            logd("id after saving $myId")
-                            if (myId != "off") {
-                                val toSave = deserialize(myId)
-                                if (toSave != null) {
-                                    person.id = toSave
+                            val response = model.add(person)
+                            logd("id after saving $response")
+                            if (response != "off") {
+                                val myObj = deserialize(response)
+                                if (myObj != null) {
+                                    person.id = myObj.id
+                                    personViewModel.insert(person)
+                                    displayFinalMessage(myObj)
                                 }
-                                personViewModel.insert(person)
+                                else{
+                                    showErrorMessage("Error when saving.")
+                                }
                             } else {
                                 person.changed = 1
                                 personViewModel.insert(person)
+                                showErrorMessage("The server is off.")
                             }
                             progress.dismiss()
                         }
@@ -110,16 +116,21 @@ class AddActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun deserialize(myString: String): Int? {
+    private fun displayFinalMessage(person: Person) {
+        val text = "The person with the name ${person.name} has ${person.age} years."
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun deserialize(myString: String): Person? {
 
         try {
             var indexStart = myString.indexOf("id") + 3
             var indexStop = myString.indexOf("name") - 3
             val id = getStringFromArea(indexStart, indexStop, myString).toInt()
             if (id == 0) {
-                return -1
+                return null
             }
-            return id
+            return Person(id,"",0,0)
         } catch (e: NumberFormatException) {
             logd("exceptie la deserializare $e")
             return null

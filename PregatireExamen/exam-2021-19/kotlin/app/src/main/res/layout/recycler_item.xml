@@ -1,0 +1,78 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Name:" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Name" />
+        <TextView
+            android:id="@+id/levelLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Level:" />
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Level" />
+
+
+        <TextView
+            android:id="@+id/idLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Id:" />
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Id" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/ivSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:drawableStart="@android:drawable/ic_media_play"
+            android:text="@string/select"
+            android:textColor="@android:color/holo_red_dark" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Template</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="staff">Staff section</string>
+    <string name="employee">Employee section</string>
+    <string name="retry">Retry</string>
+    <string name="time">View at specified time</string>
+    <string name="level">View at specified level</string>
+</resources>
