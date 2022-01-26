@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/purple"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/numeLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Nume:" />
+    <EditText
+        android:id="@+id/nume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Nume"  />
+
+    <TextView
+        android:id="@+id/doctorLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Doctor:" />
+    <EditText
+        android:id="@+id/doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Doctor" />
+
+    <TextView
+        android:id="@+id/dataLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Data:" />
+    <EditText
+        android:id="@+id/data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Data" />
+
+    <TextView
+        android:id="@+id/oraLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Ora:" />
+    <EditText
+        android:id="@+id/ora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Ora" />
+
+    <TextView
+        android:id="@+id/detaliiLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Detalii:" />
+    <EditText
+        android:id="@+id/detalii"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Detalii" />
+
+
+
+    <Button
+
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:text="@string/add"
+        android:textColor="@color/black" />
+
+</LinearLayout>
