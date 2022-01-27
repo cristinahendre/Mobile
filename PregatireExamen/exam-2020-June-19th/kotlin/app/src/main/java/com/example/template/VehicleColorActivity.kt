@@ -24,17 +24,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RegistrationActivity : AppCompatActivity() {
+class VehicleColorActivity : AppCompatActivity() {
     private lateinit var myViewModel: MyViewModel
     private val model: Model by viewModels()
     private lateinit var adapter: ListAdapter
     private lateinit var view: View
     private lateinit var progress: ProgressDialog
+    private lateinit var color: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
+        setContentView(R.layout.activity_vehiclecolor)
         progress = ProgressDialog(this)
         progress.setTitle("Loading")
         progress.setMessage("Please wait...")
@@ -42,16 +43,13 @@ class RegistrationActivity : AppCompatActivity() {
         view = View(this)
         myViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
         adapter = ListAdapter(this)
-        fetchData()
-        setupRecyclerView(findViewById(R.id.recyclerview))
-        observeModel()
-
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            val intent = Intent(this@RegistrationActivity, AddActivity::class.java)
-            startActivity(intent)
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            color = bundle.getString("Color").toString()
         }
-
+        fetchData()
+        observeModel()
+        setupRecyclerView(findViewById(R.id.recyclerview))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,9 +63,7 @@ class RegistrationActivity : AppCompatActivity() {
                 logd("retry clicked")
                 GlobalScope.launch(Dispatchers.Main) {
                     progress.show()
-                    areChangesToBeDone()
                     fetchData()
-                    observeModel()
                     progress.dismiss()
                 }
             }
@@ -91,11 +87,12 @@ class RegistrationActivity : AppCompatActivity() {
             val paintItemView: TextView = itemView.findViewById(R.id.paint)
             val driverItemView: TextView = itemView.findViewById(R.id.driver)
             val capacityItemView: TextView = itemView.findViewById(R.id.capacity)
+            val ivDelete: Button = itemView.findViewById(R.id.ivDelete)
 
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
-            val itemView = inflater.inflate(R.layout.recycler_item, parent, false)
+            val itemView = inflater.inflate(R.layout.delete_item, parent, false)
             return PeopleViewHolder(itemView)
         }
 
@@ -107,6 +104,10 @@ class RegistrationActivity : AppCompatActivity() {
             holder.driverItemView.text = current.driver
             holder.paintItemView.text = current.paint
             holder.capacityItemView.text = current.capacity.toString()
+            holder.ivDelete.setOnClickListener {
+                logd("to delete $current")
+                delete(current)
+            }
         }
 
 
@@ -121,56 +122,61 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
 
+    private fun delete(v: Vehicle) {
+        GlobalScope.launch(Dispatchers.Main) {
+            progress.show()
+            val resp = model.delete(v.id)
+            if (resp == "off") {
+                displayMessage("The server is down. Please retry.")
+            } else {
+                val myObj = deserialize(resp)
+                if (myObj == null) {
+                    displayMessage("Invalid vehicle id")
+                } else {
+                    myViewModel.delete(v.id)
+                }
+            }
+            progress.dismiss()
+        }
+
+    }
+
+
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun fetchData() {
-        progress.show()
-        myViewModel.getAll()
-        myViewModel.data?.observe(this,
-            { sections ->
-                progress.show()
 
-                if (sections == null || sections.isEmpty()) {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        progress.show()
-                        val myData = model.getAll()
-                        if (myData == null) {
-                            //the server is off
-                            displayData(emptyList())
-                            displayMessage("The server is down, there is no local data.")
-                        } else {
-                            areChangesToBeDone()
-                            myViewModel.insertAll(myData)
-                            logd("done inserting")
-                        }
-                        progress.dismiss()
-                    }
-                } else {
-                    progress.show()
-                    myViewModel.data!!.value?.let { displayData(it) }
-                    progress.dismiss()
-                }
-                progress.dismiss()
-            })
+        GlobalScope.launch(Dispatchers.Main) {
+            progress.show()
 
-        progress.dismiss()
+            val myData = model.getVehiclesOfColor(color)
+            if (myData == null) {
+                //the server is off
+                displayData(emptyList())
+                displayMessage("The server is down, there is no local data.")
+            } else {
+                myViewModel.getVehiclesOfColor(color)
+                myViewModel.coloredData?.observe { displayData(it ?: emptyList()) }
+                displayData(myData)
+            }
+            progress.dismiss()
+        }
     }
 
+    private fun observeModel() {
+        logd("colored vehicles ${myViewModel.coloredData?.value}")
+    }
+
+    private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
+        observe(this@VehicleColorActivity, { observe(it) })
 
     private fun displayData(gr: List<Vehicle>) {
         adapter.setData(gr)
     }
 
-    private fun observeModel() {
-        myViewModel.getAllChanged()
-        myViewModel.changedData?.observe { }
-    }
-
-    private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
-        observe(this@RegistrationActivity, { observe(it) })
 
     private fun displayMessage(myMessage: String) {
         val parentLayout: View = findViewById(android.R.id.content)
@@ -178,60 +184,6 @@ class RegistrationActivity : AppCompatActivity() {
             .setAction("CLOSE") { }
             .setActionTextColor(resources.getColor(android.R.color.holo_red_light))
             .show()
-    }
-
-    private suspend fun areChangesToBeDone(): Boolean {
-        val dbGrades = myViewModel.changedData?.value
-        progress.show()
-        try {
-            if (dbGrades != null) {
-                for (gr: Vehicle in dbGrades) {
-                    logd(gr)
-                    if (gr.changed == 1) {
-                        //to add
-                        gr.changed = 0
-                        val res = model.add(gr)
-                        if (res != "off") {
-                            val myObj = deserialize(res)
-                            if (myObj != null) {
-                                gr.status = myObj.status
-                                myViewModel.insert(gr)
-                            } else {
-                                displayMessage("Error when saving.")
-                            }
-                        } else gr.changed = 1
-                    }
-                    if (gr.changed == 2) {
-                        //to delete
-                        gr.changed = 0
-                        val res = model.delete(gr.id)
-                        if (res != "off") {
-                            myViewModel.delete(gr.id)
-                        } else gr.changed = 2
-                    }
-                    if (gr.changed == 3) {
-                        //to update
-                        gr.changed = 0
-                        val res = model.update(gr)
-                        if (res != "off") {
-                            myViewModel.update(gr)
-                        } else gr.changed = 3
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            progress.dismiss()
-            return false
-        }
-        progress.dismiss()
-        return true
-    }
-
-    private fun displayFinalMessage(vehicle: Vehicle) {
-        val text = "The vehicle with the name ${vehicle.name} and color ${vehicle.paint} has" +
-                " the status ${vehicle.status} and it has the driver ${vehicle.driver} and " +
-                " it can fit ${vehicle.passengers} people, with a capacity of ${vehicle.capacity}"
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     private fun deserialize(myString: String): Vehicle? {

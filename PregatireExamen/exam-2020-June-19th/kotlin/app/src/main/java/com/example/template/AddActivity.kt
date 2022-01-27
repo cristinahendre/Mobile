@@ -22,7 +22,11 @@ import kotlinx.coroutines.launch
 class AddActivity : AppCompatActivity() {
 
     private lateinit var name: EditText
-    private lateinit var age: EditText
+    private lateinit var driver: EditText
+    private lateinit var status: EditText
+    private lateinit var capacity: EditText
+    private lateinit var passengers: EditText
+    private lateinit var paint: EditText
     private var id: Int = 0
     private lateinit var button: Button
     private val model: Model by viewModels()
@@ -39,7 +43,11 @@ class AddActivity : AppCompatActivity() {
         progress.setCancelable(false)
         personViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
         name = findViewById(R.id.name)
-        age = findViewById(R.id.age)
+        driver = findViewById(R.id.driver)
+        capacity = findViewById(R.id.capacity)
+        status = findViewById(R.id.status)
+        paint = findViewById(R.id.paint)
+        passengers = findViewById(R.id.passengers)
         button = findViewById(R.id.button_save)
 
         val bundle: Bundle? = intent.extras
@@ -48,7 +56,7 @@ class AddActivity : AppCompatActivity() {
             logd("update window")
             name.setText(bundle.getString("Name"))
             id = bundle.getInt("Id")
-            age.setText(bundle.getInt("Age").toString())
+            passengers.setText(bundle.getInt("Age").toString())
             button.text = "Update"
         }
 
@@ -58,46 +66,63 @@ class AddActivity : AppCompatActivity() {
             val replyIntent = Intent()
             try {
 
-                val person = Vehicle(0, name.text.toString(), age.text.toString().toInt(), 0)
-                if (person.name == "" || person.name == " " || person.age < 0) {
+                val vehicle = Vehicle(
+                    0,
+                    name.text.toString(),
+                    status.text.toString(),
+                    passengers.text.toString().toInt(),
+                    driver.text.toString(),
+                    paint.text.toString(),
+                    capacity.text.toString().toInt(),
+                    0
+                )
+                if (vehicle.name == "" || vehicle.name == " " || vehicle.status == "" ||
+                    vehicle.status == " "
+                ) {
                     showErrorMessage("Invalid data.")
                 } else {
                     GlobalScope.launch(Dispatchers.Main) {
                         if (isUpdate) {
                             progress.show()
 
-                            person.id = id
-                            val resp = model.update(person)
+                            vehicle.id = id
+                            val resp = model.update(vehicle)
                             if (resp == "off") {
                                 showErrorMessage("The server is down.")
-                                person.changed = 3
+                                vehicle.changed = 3
                             }
-                            personViewModel.update(person)
+                            personViewModel.update(vehicle)
                             progress.dismiss()
+                            setResult(Activity.RESULT_OK, replyIntent)
+                            finish()
 
                         } else {
                             progress.show()
-                            val response = model.add(person)
+                            val response = model.add(vehicle)
                             logd("id after saving $response")
                             if (response != "off") {
                                 val myObj = deserialize(response)
                                 if (myObj != null) {
-                                    person.id = myObj.id
-                                    personViewModel.insert(person)
-                                    displayFinalMessage(myObj)
-                                }
-                                else{
+                                    vehicle.status =myObj.status
+                                    progress.dismiss()
+                                    personViewModel.insert(vehicle)
+                                    setResult(Activity.RESULT_OK, replyIntent)
+                                    finish()
+                                } else {
                                     showErrorMessage("Error when saving.")
+                                    progress.dismiss()
                                 }
                             } else {
-                                person.changed = 1
-                                personViewModel.insert(person)
+                                vehicle.changed = 1
+                                personViewModel.insert(vehicle)
                                 showErrorMessage("The server is off.")
+                                progress.dismiss()
+                                setResult(Activity.RESULT_OK, replyIntent)
+                                finish()
                             }
                             progress.dismiss()
                         }
-                        setResult(Activity.RESULT_OK, replyIntent)
-                        finish()
+
 
                     }
                 }
@@ -117,12 +142,12 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun displayFinalMessage(vehicle: Vehicle) {
-        val text = "The vehicle with the name ${vehicle.name} has ${vehicle.age} years."
+        val text = "The."
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
     private fun deserialize(myString: String): Vehicle? {
-
+//Vehicle(id=55, name=yes, status=tt, passengers=5, driver=dd, paint=f, capacity=5, changed=0)
         try {
             var indexStart = myString.indexOf("id") + 3
             var indexStop = myString.indexOf("name") - 3
@@ -130,7 +155,10 @@ class AddActivity : AppCompatActivity() {
             if (id == 0) {
                 return null
             }
-            return Vehicle(id,"",0,0)
+            indexStart = myString.indexOf("status") + 7
+            indexStop = myString.indexOf("passengers") - 3
+            val status = getStringFromArea(indexStart, indexStop, myString)
+            return Vehicle(id, "", status, 0, "", "", 0, 0)
         } catch (e: NumberFormatException) {
             logd("exceptie la deserializare $e")
             return null

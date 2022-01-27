@@ -20,6 +20,46 @@ object NetworkRepository {
         }
     }
 
+    suspend fun getColors(): List<String>? {
+        try {
+            if (RestService.service == null) {
+                return null
+            }
+            val result = RestService.service.getColors()
+            logd("[get colors network] $result")
+            return result
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
+    suspend fun getVehiclesOfColor(color:String): List<Vehicle>? {
+        try {
+            if (RestService.service == null) {
+                return null
+            }
+            val result = RestService.service.getVehiclesOfColor(color)
+            logd("[get vehicle for color $color network] $result")
+            return result
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
+
+    suspend fun getDriversCars(driver:String): List<Vehicle>? {
+        try {
+            if (RestService.service == null) {
+                return null
+            }
+            val result = RestService.service.getDriversCars(driver)
+            logd("[get vehicles for driver $driver network] $result")
+            return result
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
 
     suspend fun delete(id: Int): String {
 

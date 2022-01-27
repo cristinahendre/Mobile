@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 
 @Database(entities = [Person::class], version = 1)
 abstract class TheDatabase: RoomDatabase() {
-    abstract fun personDao(): MyDao
+    abstract fun myDao(): MyDao
 
     companion object {
         @Volatile

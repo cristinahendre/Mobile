@@ -3,6 +3,13 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
-    <string name="registration">Registration</string>
+    <string name="registration">Registration section</string>
+    <string name="manage">Manage section</string>
+    <string name="reports">Reports section</string>
     <string name="retry">Retry</string>
+    <string name="select">Select</string>
+    <string name="topvehicles">Top 10 Vehicles</string>
+    <string name="topdrivers">Top 10 Drivers</string>
+    <string name="driver">Driver section</string>
+    <string name="biggest5">Biggest 5 vehicles</string>
 </resources>

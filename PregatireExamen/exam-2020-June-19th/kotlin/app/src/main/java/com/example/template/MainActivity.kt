@@ -17,6 +17,24 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, RegistrationActivity::class.java)
             startActivity(intent)
         }
+
+        val manage = findViewById<Button>(R.id.manage)
+        manage.setOnClickListener {
+            val intent = Intent(this@MainActivity, ManageActivity::class.java)
+            startActivity(intent)
+        }
+
+        val reports = findViewById<Button>(R.id.reports)
+        reports.setOnClickListener {
+            val intent = Intent(this@MainActivity, ReportsActivity::class.java)
+            startActivity(intent)
+        }
+
+        val driver = findViewById<Button>(R.id.driver)
+        driver.setOnClickListener {
+            val intent = Intent(this@MainActivity, DriverActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

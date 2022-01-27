@@ -10,6 +10,9 @@ interface MyDao {
     @Query("SELECT * FROM vehicles where changed!=2")
     fun getAll(): LiveData<List<Vehicle>>
 
+    @Query("SELECT * FROM vehicles where changed!=2 and paint = :c")
+    fun getVehiclesOfColor(c:String): LiveData<List<Vehicle>>
+
     @Query("SELECT * FROM vehicles where changed != 0")
     fun getAllChanged(): LiveData<List<Vehicle>>
 

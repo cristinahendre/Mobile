@@ -1,0 +1,73 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/green"
+    android:padding="10dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Name:" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Status:" />
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Status" />
+
+        <TextView
+            android:id="@+id/driverLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Driver:" />
+        <TextView
+            android:id="@+id/driver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Driver" />
+
+
+        <TextView
+            android:id="@+id/capacityLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Capacity:" />
+        <TextView
+            android:id="@+id/capacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Capacity" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

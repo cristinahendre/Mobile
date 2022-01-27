@@ -25,7 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class SectionActivity : AppCompatActivity() {
-    private lateinit var personViewModel: MyViewModel
+    private lateinit var myViewModel: MyViewModel
     private val model: Model by viewModels()
     private lateinit var adapter: ListAdapter
     private lateinit var view: View
@@ -40,9 +40,9 @@ class SectionActivity : AppCompatActivity() {
         progress.setMessage("Please wait...")
         progress.setCancelable(false)
         view = View(this)
-        personViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
+        myViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
         adapter = ListAdapter(this)
-        personViewModel.deleteAll()
+        myViewModel.deleteAll()
         fetchData()
         setupRecyclerView(findViewById(R.id.recyclerview))
         observeModel()
@@ -132,9 +132,9 @@ class SectionActivity : AppCompatActivity() {
             if (result == "off") {
                 //the server is off
                 space.changed = 2
-                personViewModel.update(space)
+                myViewModel.update(space)
             }  else {
-                personViewModel.delete(space.id)
+                myViewModel.delete(space.id)
             }
             progress.dismiss()
         }
@@ -153,7 +153,7 @@ class SectionActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        personViewModel.data
+        myViewModel.data
             ?.observe(this, { myGrades ->
                 if (myGrades != null) {
                     adapter.setData(myGrades)
@@ -167,15 +167,15 @@ class SectionActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
 
             progress.show()
-            personViewModel.getAllChanged()
-            personViewModel.changedData?.observe { }
+            myViewModel.getAllChanged()
+            myViewModel.changedData?.observe { }
             val myGrades = model.getAll()
             if (myGrades == null) {
                 //the server is off
                 displayMessage("The server is down, using local data.")
             } else {
                 areChangesToBeDone()
-                personViewModel.insertAll(myGrades)
+                myViewModel.insertAll(myGrades)
                 logd("done inserting")
             }
             progress.dismiss()
@@ -189,8 +189,8 @@ class SectionActivity : AppCompatActivity() {
     }
 
     private fun observeModel() {
-        personViewModel.getAll()
-        personViewModel.data?.observe { displayData(it ?: emptyList()) }
+        myViewModel.getAll()
+        myViewModel.data?.observe { displayData(it ?: emptyList()) }
     }
 
     private fun <T> LiveData<T>.observe(observe: (T?) -> Unit) =
@@ -205,46 +205,44 @@ class SectionActivity : AppCompatActivity() {
     }
 
     private suspend fun areChangesToBeDone(): Boolean {
-        val dbGrades = personViewModel.changedData?.value
+        val dbGrades = myViewModel.changedData?.value
         progress.show()
         try {
             if (dbGrades != null) {
-                if (dbGrades != null) {
-                    for (gr: Person in dbGrades) {
-                        logd(gr)
-                        if (gr.changed == 1) {
-                            //to add
-                            gr.changed = 0
-                            val res = model.add(gr)
-                            if (res != "off") {
-                                val myObj =deserialize(res)
-                                if(myObj!=null) {
-                                    displayFinalMessage(myObj)
-                                    personViewModel.delete(gr.id)
-                                    gr.id = myObj.id
-                                    personViewModel.insert(gr)
-                                }
-                                else{
-                                    displayMessage("Error when saving.")
-                                }
-                            } else gr.changed = 1
-                        }
-                        if (gr.changed == 2) {
-                            //to delete
-                            gr.changed = 0
-                            val res = model.delete(gr.id)
-                            if (res != "off") {
-                                personViewModel.delete(gr.id)
-                            } else gr.changed = 2
-                        }
-                        if (gr.changed == 3) {
-                            //to update
-                            gr.changed = 0
-                            val res = model.update(gr)
-                            if (res != "off") {
-                                personViewModel.update(gr)
-                            } else gr.changed = 3
-                        }
+                for (gr: Person in dbGrades) {
+                    logd(gr)
+                    if (gr.changed == 1) {
+                        //to add
+                        gr.changed = 0
+                        val res = model.add(gr)
+                        if (res != "off") {
+                            val myObj =deserialize(res)
+                            if(myObj!=null) {
+                                displayFinalMessage(myObj)
+                                myViewModel.delete(gr.id)
+                                gr.id = myObj.id
+                                myViewModel.insert(gr)
+                            }
+                            else{
+                                displayMessage("Error when saving.")
+                            }
+                        } else gr.changed = 1
+                    }
+                    if (gr.changed == 2) {
+                        //to delete
+                        gr.changed = 0
+                        val res = model.delete(gr.id)
+                        if (res != "off") {
+                            myViewModel.delete(gr.id)
+                        } else gr.changed = 2
+                    }
+                    if (gr.changed == 3) {
+                        //to update
+                        gr.changed = 0
+                        val res = model.update(gr)
+                        if (res != "off") {
+                            myViewModel.update(gr)
+                        } else gr.changed = 3
                     }
                 }
             }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow">
+    android:background="@color/green">
 
 
     <LinearLayout
@@ -13,35 +13,27 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/registration"
+            android:id="@+id/topdrivers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_blue"
-            android:text="@string/registration"
+            android:backgroundTint="@color/purple"
+            android:text="@string/topdrivers"
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/manage"
+            android:id="@+id/topvehicles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_blue"
-            android:text="@string/manage"
+            android:backgroundTint="@color/purple"
+            android:text="@string/topvehicles"
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/reports"
+            android:id="@+id/biggest5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_blue"
-            android:text="@string/reports"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/driver"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_blue"
-            android:text="@string/driver"
+            android:backgroundTint="@color/purple"
+            android:text="@string/biggest5"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

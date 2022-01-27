@@ -29,6 +29,13 @@ class DbRepository(private val myDao: MyDao) {
         return myDao.getAllChanged()
     }
 
+    fun getVehiclesOfColor(c:String): LiveData<List<Vehicle>>{
+        logd("[db repo] get data of color $c")
+        val res = myDao.getVehiclesOfColor(c)
+        logd("got ${res.value}")
+        return res
+    }
+
 
     suspend fun delete(id: Int) {
         logd("[db repo] delete id in repo, id= $id")

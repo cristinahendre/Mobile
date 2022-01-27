@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/purple"
-    android:layout_height="match_parent">
-
-
-    <TextView
-        android:id="@+id/ageLabel"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Age:" />
-    <EditText
-        android:id="@+id/age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:hint="Age" />
-
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/nameLabel"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Name:" />
+
     <EditText
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -34,8 +19,82 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:ems="10"
-        android:hint="Name"  />
+        android:hint="Name" />
 
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status:" />
+
+    <EditText
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Status" />
+
+    <TextView
+        android:id="@+id/passengersLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Passengers:" />
+
+    <EditText
+        android:id="@+id/passengers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Passengers" />
+
+    <TextView
+        android:id="@+id/driverLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Driver:" />
+
+    <EditText
+        android:id="@+id/driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Driver" />
+
+    <TextView
+        android:id="@+id/paintLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paint:" />
+
+    <EditText
+        android:id="@+id/paint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Paint" />
+
+    <TextView
+        android:id="@+id/capacityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capacity:" />
+
+    <EditText
+        android:id="@+id/capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Capacity" />
 
     <Button
 

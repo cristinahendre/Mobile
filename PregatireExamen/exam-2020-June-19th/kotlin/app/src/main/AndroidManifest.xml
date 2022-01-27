@@ -20,6 +20,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddActivity" />
+        <activity android:name=".ManageActivity" />
+        <activity android:name=".VehicleColorActivity" />
+        <activity android:name=".ReportsActivity" />
+        <activity android:name=".Biggest5Activity" />
+        <activity android:name=".DetailsScreenActivity" />
+        <activity android:name=".DriverActivity" />
+        <activity android:name=".TopVehiclesActivity" />
+        <activity android:name=".TopDriversActivity" />
         <activity android:name=".RegistrationActivity" />
     </application>
 

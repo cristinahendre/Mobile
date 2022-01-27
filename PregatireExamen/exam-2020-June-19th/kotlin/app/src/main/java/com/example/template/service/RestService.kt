@@ -18,10 +18,20 @@ object RestService {
     private const val URL = "http://10.0.2.2:2019/"
 
     interface Service {
+
         @GET("all")
         suspend fun getAll(): List<Vehicle>
 
-        @DELETE("{id}")
+        @GET("paint")
+        suspend fun getColors(): List<String>
+
+        @GET("my/{driver}")
+        suspend fun getDriversCars(@Path("driver") driver:String): List<Vehicle>
+
+        @GET("vehicles/{color}")
+        suspend fun getVehiclesOfColor(@Path("color") color:String): List<Vehicle>
+
+        @DELETE("vehicle/{id}")
         suspend fun delete(@Path("id") id: Int): Response<Vehicle>
 
         @POST("vehicle")

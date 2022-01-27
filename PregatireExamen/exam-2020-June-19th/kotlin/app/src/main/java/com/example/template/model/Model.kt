@@ -35,7 +35,26 @@ class Model : ViewModel() {
     suspend fun getAll(): List<Vehicle>? {
         val res = NetworkRepository.getAll()
         logd("[model-get all]")
+        return res
+    }
+
+    suspend fun getVehiclesOfColor(color:String): List<Vehicle>? {
+        val res = NetworkRepository.getVehiclesOfColor(color)
+        logd("[model-get vehicles of color] $res")
         mutableData.value = res
+        return res
+    }
+
+
+    suspend fun getDriversCars(driver:String): List<Vehicle>? {
+        val res = NetworkRepository.getDriversCars(driver)
+        logd("[model-get vehicles for driver] $res")
+        return res
+    }
+
+    suspend fun getColors(): List<String>? {
+        val res = NetworkRepository.getColors()
+        logd("[model-get colors]")
         return res
     }
 }

@@ -1,9 +1,11 @@
 package com.example.template.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.template.WebSocketStuff
 import com.example.template.database.TheDatabase
 import com.example.template.domain.Person
 import com.example.template.logd
@@ -18,8 +20,27 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     var changedData: LiveData<List<Person>>? = null
 
     init {
-        val gradeDao = TheDatabase.getDatabase(application, viewModelScope).personDao()
+        val gradeDao = TheDatabase.getDatabase(application, viewModelScope).myDao()
         repository = DbRepository(gradeDao)
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                WebSocketStuff.start() {
+                    viewModelScope.launch {
+                        logd("aici $it")
+                        val text = "I am ${it.name} and I have ${it.age} years."
+                        Toast.makeText(
+                            application.baseContext.applicationContext,
+                            text,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+            }catch (e: Exception){
+
+            }
+        }
     }
 
     fun insertAll(gr: List<Person>) = viewModelScope.launch(Dispatchers.IO) {
