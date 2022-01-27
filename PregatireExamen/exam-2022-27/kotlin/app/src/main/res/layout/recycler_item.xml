@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/idLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Id:" />
+
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="id"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:id="@+id/medieLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medie:" />
+
+        <TextView
+            android:id="@+id/medie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Medie"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/ivValidate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:drawableStart="@android:drawable/checkbox_off_background"
+            android:text="@string/validate"
+            android:textColor="@android:color/holo_red_dark" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
