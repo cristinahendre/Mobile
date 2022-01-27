@@ -1,11 +1,8 @@
 package com.example.template.service
-import android.database.Observable
 import android.util.AndroidRuntimeException
-import com.example.template.domain.Rezervare
+import com.example.template.domain.Vehicle
 import com.example.template.logd
 import com.google.gson.*
-import com.tinder.scarlet.WebSocket
-import com.tinder.scarlet.ws.Receive
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -13,39 +10,36 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.lang.NullPointerException
-import java.util.*
 
 import java.util.concurrent.TimeUnit
 
 
 object RestService {
-    private const val URL = "http://10.0.2.2:2025/"
+    private const val URL = "http://10.0.2.2:2019/"
 
     interface Service {
-        @GET("open")
-        suspend fun getAll(): List<Rezervare>
+        @GET("all")
+        suspend fun getAll(): List<Vehicle>
 
         @DELETE("{id}")
-        suspend fun delete(@Path("id") id: Int): Response<Rezervare>
+        suspend fun delete(@Path("id") id: Int): Response<Vehicle>
 
-        @POST("create")
+        @POST("vehicle")
         suspend fun add(
-            @Body grade: RezervareCredentials): Response<Rezervare>
-
-        @POST("confirm")
-        suspend fun confirm(
-            @Body id: IdCredential): Response<Rezervare>
+            @Body grade: VehicleCredentials): Response<Vehicle>
 
         @PUT("person")
         suspend fun update(
-            @Body grade: RezervareCredentials
-        ): Response<Rezervare>
+            @Body grade: VehicleCredentials
+        ): Response<Vehicle>
 
     }
 
     private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         this.level = HttpLoggingInterceptor.Level.BODY
     }
+
+
 
     private val client: OkHttpClient? = createClient()
 

@@ -5,6 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import androidx.lifecycle.ViewModelProviders
+import com.example.template.viewmodel.MyViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val personViewModel = ViewModelProviders.of(this).get(MyViewModel::class.java)
+
 
         val secretar = findViewById<Button>(R.id.secretar)
         secretar.setOnClickListener {
