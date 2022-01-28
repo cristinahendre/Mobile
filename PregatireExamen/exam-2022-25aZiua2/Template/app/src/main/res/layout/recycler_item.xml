@@ -1,0 +1,88 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/idLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Id:" />
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Id" />
+
+        <TextView
+            android:id="@+id/numeLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Nume:" />
+        <TextView
+            android:id="@+id/nume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Nume" />
+        <TextView
+            android:id="@+id/tipLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Tip:" />
+        <TextView
+            android:id="@+id/tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Tip" />
+
+        <TextView
+            android:id="@+id/pretLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Pret:" />
+        <TextView
+            android:id="@+id/pret"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Pret" />
+
+        <TextView
+            android:id="@+id/cantitateLabel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Cantitate:" />
+        <TextView
+            android:id="@+id/cantitate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Cantitate" />
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -1,16 +1,13 @@
 package com.example.template.repository
 
-import android.database.Observable
-import androidx.lifecycle.LiveData
-import com.example.template.domain.Dosar
+import com.example.template.domain.Produs
 import com.example.template.logd
-import com.example.template.service.DosarCredentials
+import com.example.template.service.ProductCredentials
 import com.example.template.service.RestService
-import com.example.template.service.SmallerCredentials
 
 object NetworkRepository {
 
-    suspend fun getAll(): List<Dosar>? {
+    suspend fun getAll(): List<Produs>? {
         try {
             if (RestService.service == null) {
                 return null
@@ -40,13 +37,14 @@ object NetworkRepository {
     }
 
 
-    suspend fun add(dosar: Dosar): String {
+    suspend fun add(produs: Produs): String {
         try {
-            logd("[add $dosar network]")
+            logd("[add $produs network]")
             if (RestService.service != null) {
                 return RestService.service.add(
-                    DosarCredentials(
-                        dosar.id, dosar.nume, dosar.medie1, dosar.medie2, dosar.status
+                    ProductCredentials(
+                        produs.id, produs.nume, produs.tip,produs.cantitate,
+                        produs.pret,produs.discount,produs.status
                     )
                 ).body().toString()
             }
@@ -57,13 +55,14 @@ object NetworkRepository {
         }
     }
 
-    suspend fun validate(dosar: Dosar): String {
+    suspend fun update(produs: Produs): String {
         try {
-            logd("[validate $dosar network]")
+            logd("[update $produs network]")
             if (RestService.service != null) {
                 return RestService.service.update(
-                    SmallerCredentials(
-                        dosar.id, dosar.status
+                    ProductCredentials(
+                        produs.id, produs.nume, produs.tip,produs.cantitate,
+                        produs.pret,produs.discount,produs.status
                     )
                 ).body().toString()
             }

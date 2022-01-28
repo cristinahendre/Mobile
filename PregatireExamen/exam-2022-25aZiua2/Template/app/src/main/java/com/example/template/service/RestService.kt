@@ -1,8 +1,6 @@
 package com.example.template.service
-import android.database.Observable
 import android.util.AndroidRuntimeException
-import androidx.lifecycle.LiveData
-import com.example.template.domain.Dosar
+import com.example.template.domain.Produs
 import com.example.template.logd
 import com.google.gson.*
 import okhttp3.OkHttpClient
@@ -17,23 +15,23 @@ import java.util.concurrent.TimeUnit
 
 
 object RestService {
-    private const val URL = "http://10.0.2.2:2027/"
+    private const val URL = "http://10.0.2.2:2025/"
 
     interface Service {
-        @GET("all")
-        suspend fun getAll(): List<Dosar>
+        @GET("products")
+        suspend fun getAll(): List<Produs>
 
         @DELETE("{id}")
-        suspend fun delete(@Path("id") id: Int): Response<Dosar>
+        suspend fun delete(@Path("id") id: Int): Response<Produs>
 
-        @POST("register")
+        @POST("product")
         suspend fun add(
-            @Body grade: DosarCredentials): Response<Dosar>
+            @Body grade: ProductCredentials): Response<Produs>
 
-        @POST("validate")
+        @PUT("person")
         suspend fun update(
-            @Body grade: SmallerCredentials
-        ): Response<Dosar>
+            @Body grade: ProductCredentials
+        ): Response<Produs>
 
     }
 
