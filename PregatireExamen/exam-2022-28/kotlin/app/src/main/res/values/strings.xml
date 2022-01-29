@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Template</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="statistica">Sectiune statistica</string>
+    <string name="student">Sectiune student</string>
+    <string name="admin">Sectiune admin</string>
+    <string name="retry">Retry</string>
+</resources>

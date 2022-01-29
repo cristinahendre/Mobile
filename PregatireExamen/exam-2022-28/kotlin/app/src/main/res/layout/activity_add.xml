@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/purple"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/numeLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Nume:" />
+    <EditText
+        android:id="@+id/nume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Nume"  />
+
+
+    <TextView
+        android:id="@+id/medieLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Medie:" />
+    <EditText
+        android:id="@+id/medie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Medie" />
+
+
+    <TextView
+        android:id="@+id/etajLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Etaj:" />
+    <EditText
+        android:id="@+id/etaj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Etaj" />
+
+    <TextView
+        android:id="@+id/orientareLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Orientare:" />
+    <EditText
+        android:id="@+id/orientare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Orientare" />
+
+    <Button
+
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:text="@string/add"
+        android:textColor="@color/black" />
+
+</LinearLayout>
